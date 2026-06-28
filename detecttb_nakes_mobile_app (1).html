@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DetectTB Nakes Mobile App</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for medical & UI Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans for clean clinical look -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        emerald: {
+                          50: '#f0fdf4',
+                          100: '#dcfce7',
+                          200: '#bbf7d0',
+                          300: '#86efac',
+                          500: '#10b981',
+                          600: '#059669',
+                          700: '#047857',
+                          805: '#065f46',
+                          900: '#064e3b',
+                        },
+                        slate: {
+                            950: '#030712'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar styling */
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+        /* Pulse for Active/Mangkir Points on Map */
+        @keyframes pulse-emerald {
+            0%, 100__% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.4; }
+        }
+        @keyframes pulse-rose {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.4; }
+        }
+        .map-pulse-active {
+            animation: pulse-emerald 2s infinite ease-in-out;
+        }
+        .map-pulse-danger {
+            animation: pulse-rose 1.5s infinite ease-in-out;
+        }
+        /* SVG Line drawing animation */
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+        .route-line {
+            stroke-dasharray: 6, 4;
+            animation: dash 1.5s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-tr from-emerald-50 via-teal-50/30 to-emerald-100/60 min-h-screen flex flex-col items-center justify-center p-3 select-none overflow-x-hidden font-sans">
+
+    <!-- SIMULATION CONTROLLER (Top Panel) -->
+    <div class="w-full max-w-[350px] mb-3 bg-white/95 backdrop-blur-md border border-emerald-100 rounded-2xl p-2.5 flex justify-between items-center shadow-md transition-all">
+        <div class="flex flex-col">
+            <span class="text-[9px] text-emerald-600 font-extrabold uppercase tracking-widest">Panel Kontrol Nakes</span>
+            <span class="text-[11px] text-slate-800 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-user-doctor text-emerald-500"></i> Alur Simulasi Kepatuhan & AI
+            </span>
+        </div>
+        <div class="flex gap-1">
+            <button 
+                onclick="triggerSimulationMangkir()"
+                class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 rounded-lg text-[9px] font-bold transition flex items-center gap-1 active:scale-95"
+            >
+                <i class="fa-solid fa-triangle-exclamation"></i> Set Red Flag
+            </button>
+            <button 
+                onclick="resetNakesSimulation()"
+                class="px-2 py-1 bg-slate-50 hover:bg-slate-100 text-slate-650 border border-slate-200 rounded-lg text-[9px] font-bold transition flex items-center gap-1 active:scale-95"
+            >
+                <i class="fa-solid fa-rotate-left"></i> Reset
+            </button>
+        </div>
+    </div>
+
+    <!-- SLIM BEZEL PHONE SHELL (Ultra Thin Bezel styled precisely to match image_2406a6.png) -->
+    <div class="w-full max-w-[350px] bg-slate-950 rounded-[44px] p-2 border-[5px] border-slate-900 shadow-[0_20px_50px_rgba(4,120,87,0.15)] relative ring-4 ring-slate-900/30 aspect-[9/19] flex flex-col transition-all">
+        
+        <!-- Physical Side Buttons -->
+        <div class="absolute -left-[6px] top-24 w-[2px] h-8 bg-slate-800 rounded-l-xs"></div>
+        <div class="absolute -left-[6px] top-34 w-[2px] h-10 bg-slate-800 rounded-l-xs"></div>
+        <div class="absolute -right-[6px] top-30 w-[2px] h-14 bg-slate-800 rounded-r-xs"></div>
+
+        <!-- Elegant Sleek Dynamic Notch (Perfected based on image_2406a6.png) -->
+        <div class="absolute top-2.5 left-1/2 -translate-x-1/2 w-24 h-4 bg-black rounded-full z-50 flex items-center justify-center border border-slate-900/60 shadow-inner">
+            <div class="w-1.5 h-1.5 rounded-full bg-slate-900 mr-2 flex items-center justify-center">
+                <div class="w-0.5 h-0.5 rounded-full bg-blue-950"></div>
+            </div>
+            <div class="w-6 h-1 bg-zinc-850 rounded-full"></div>
+        </div>
+
+        <!-- APP MAIN WRAPPER -->
+        <div class="bg-slate-50 rounded-[38px] overflow-hidden flex-1 flex flex-col justify-between relative border border-slate-100 shadow-inner">
+            
+            <!-- POPUP: KIRIM PERINGATAN WA (Sesuai image_23eb84.png) -->
+            <div id="wa-modal" class="hidden absolute inset-0 bg-slate-950/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+                <div class="bg-white rounded-2xl p-4 w-full max-w-[280px] shadow-xl border border-slate-100 flex flex-col gap-3 animate-fade-in">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm shadow-sm">
+                            <i class="fa-brands fa-whatsapp text-base"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-[11px] font-extrabold text-slate-800 leading-none">Kirim Peringatan WA</h4>
+                            <span class="text-[8px] text-slate-400 font-bold block mt-0.5">Penerima: <span id="wa-penerima">Budi Santoso</span></span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-[9px] text-slate-600 leading-normal font-medium">
+                        "Halo <span id="wa-nama-isi" class="font-bold text-slate-850">Budi Santoso</span>, saya Pak Budi (PMO-mu). Kamu hari ini belum melaporkan minum obat TBC di aplikasi SIPATUH. Batas waktu laporan adalah jam 09.00 WIB. Segera diminum dan upload foto obatnya ya!"
+                    </div>
+                    <div class="flex gap-1.5 text-[9.5px] font-bold mt-1">
+                        <button onclick="closeWaModal()" class="flex-1 py-1.5 border border-slate-200 text-slate-500 rounded-lg bg-white hover:bg-slate-50 transition active:scale-95">Batal</button>
+                        <button onclick="sendWaNotification()" class="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition shadow-xs active:scale-95">Kirim Sekarang</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Top Status Bar (Matching image_2406a6.png) -->
+            <div class="px-5 pt-3.5 pb-1.5 flex justify-between items-center text-[9px] font-bold text-slate-500 z-40 bg-gradient-to-b from-slate-50 to-transparent">
+                <span id="phone-clock" class="text-slate-850 font-extrabold text-[10px]">20:20 WIB</span>
+                <div class="flex gap-1.5 items-center">
+                    <span class="text-[7.5px] bg-emerald-50 border border-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-bold">DetectTB Nakes</span>
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                </div>
+            </div>
+
+            <!-- Notification Header (Warning Alert for Nakes) -->
+            <div id="redflag-notification" class="hidden mx-3 mt-1 mb-1.5 p-2.5 bg-gradient-to-r from-rose-50 to-white rounded-xl border border-rose-100 flex gap-2 items-start shadow-sm z-40 animate-fade-in relative">
+                <div class="p-1.5 bg-rose-600 text-white rounded-lg shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
+                </div>
+                <div class="flex-1 text-[11px]">
+                    <div class="flex justify-between items-center mb-0.5">
+                        <span class="font-extrabold text-rose-800 text-[10.5px]">Alarm Kepatuhan (Red Flag) ⚠️</span>
+                        <button onclick="closeRedNotification()" class="text-slate-400 hover:text-slate-650">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <p class="text-[9.5px] text-slate-500 leading-tight mb-2">Pasien <b>Budi Santoso</b> terdeteksi mangkir selama 3 hari berturut-turut tanpa bukti pelaporan foto obat sore.</p>
+                    <div class="flex gap-1">
+                        <button onclick="openWaModal('Budi Santoso')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[8.5px] font-bold flex items-center gap-1 transition shadow-xs">
+                            <i class="fa-brands fa-whatsapp text-[10px]"></i> Hubungi WA
+                        </button>
+                        <button onclick="navigateTo('peta')" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-[8.5px] font-bold flex items-center gap-1 transition">
+                            <i class="fa-solid fa-map-location-dot"></i> Lihat di Peta
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCREEN CONTAINER -->
+            <div class="flex-1 overflow-y-auto px-3.5 py-1 scrollbar-none flex flex-col gap-3">
+                
+                <!-- SCREEN 1: BERANDA NAKES -->
+                <div id="screen-beranda" class="flex flex-col gap-3 animate-fade-in">
+                    
+                    <!-- Clinic Logo & Nakes Info Board -->
+                    <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-emerald-100/30 shadow-xs">
+                        <div class="flex items-center gap-2">
+                            <div class="w-7 h-7 text-emerald-600">
+                                <svg viewBox="0 0 100 100" class="w-full h-full" fill="currentColor">
+                                    <path d="M45,25 C35,25 30,35 30,50 C30,65 37,75 45,75 C47,75 48,70 47,65 C45,55 45,45 47,35 C48,30 47,25 45,25 Z" />
+                                    <path d="M55,25 C65,25 70,35 70,50 C70,65 63,75 55,75 C53,75 52,70 53,65 C55,55 55,45 53,35 C52,30 53,25 55,25 Z" fill-opacity="0.8"/>
+                                    <circle cx="50" cy="50" r="10" fill="none" stroke="currentColor" stroke-width="4" />
+                                    <line x1="57" y1="57" x2="68" y2="68" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" />
+                                </svg>
+                            </div>
+                            <div>
+                                <span class="text-sm font-extrabold tracking-tight text-emerald-800 block">DetectTB</span>
+                                <span class="text-[8px] text-slate-400 font-bold block -mt-0.5">Puskesmas Kec. Senen</span>
+                            </div>
+                        </div>
+                        <div class="text-right flex flex-col">
+                            <span class="text-[9px] font-extrabold text-slate-800">Dr. Sarah Wijaya</span>
+                            <span class="text-[7px] text-emerald-600 font-bold uppercase">Nakes Penanggung Jawab</span>
+                        </div>
+                    </div>
+
+                    <!-- Macro Monitoring Cards Grid -->
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="bg-white p-2 rounded-xl border border-slate-100 shadow-xxs text-center cursor-pointer" onclick="navigateTo('monitoring')">
+                            <span class="text-[7.5px] text-slate-400 block font-bold">TOTAL PASIEN</span>
+                            <span class="text-sm font-extrabold text-slate-800 block mt-0.5">42</span>
+                        </div>
+                        <div class="bg-white p-2 rounded-xl border border-slate-100 shadow-xxs text-center">
+                            <span class="text-[7.5px] text-slate-400 block font-bold">PENDING PIL</span>
+                            <span id="txt-pending-count" class="text-sm font-extrabold text-emerald-600 block mt-0.5">1</span>
+                        </div>
+                        <div id="card-redflag-count" class="bg-white p-2 rounded-xl border border-slate-100 shadow-xxs text-center transition">
+                            <span class="text-[7.5px] text-slate-400 block font-bold">RED FLAG</span>
+                            <span id="txt-redflag-count" class="text-sm font-extrabold text-slate-800 block mt-0.5">0</span>
+                        </div>
+                    </div>
+
+                    <!-- TWO MAIN CTAs FOR NAKES WORKFLOW -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <!-- CTA 1: Sputum Screening (3-Model Pipeline) -->
+                        <div 
+                            onclick="navigateTo('skrining')"
+                            class="bg-gradient-to-br from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white p-2.5 rounded-xl cursor-pointer transition active:scale-[0.98] shadow-sm flex flex-col justify-between h-[85px]"
+                        >
+                            <div class="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-white">
+                                <i class="fa-solid fa-microscope text-xs"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold block leading-none">Uji Mikroskopis</span>
+                                <span class="text-[7px] text-emerald-100 block mt-0.5 leading-tight">RepVGG-YOLO 3-Step Pipeline</span>
+                            </div>
+                        </div>
+
+                        <!-- CTA 2: Scan QR Registration (Pre-registration) -->
+                        <div 
+                            onclick="navigateTo('scan')"
+                            class="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 p-2.5 rounded-xl cursor-pointer transition active:scale-[0.98] shadow-sm flex flex-col justify-between h-[85px]"
+                        >
+                            <div class="w-6 h-6 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                                <i class="fa-solid fa-qrcode text-xs"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-extrabold block leading-none text-slate-800">Scan QR Pasien</span>
+                                <span class="text-[7.5px] text-slate-400 block mt-0.5">Sync Instan SATUSEHAT</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FEATURE: BUTUH VERIFIKASI SEGERA (From Reference Screen A) -->
+                    <div id="section-verifikasi-foto" class="bg-white p-3 rounded-xl border border-slate-100 shadow-xs flex flex-col gap-2">
+                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider flex justify-between items-center">
+                            <span>Butuh Verifikasi Segera</span>
+                            <span class="px-1.5 py-0.2 bg-amber-50 border border-amber-200 text-amber-700 text-[7px] font-bold rounded-full">Menunggu PMO</span>
+                        </span>
+                        
+                        <div id="verification-card" class="bg-slate-50/60 border border-slate-150 p-2.5 rounded-xl flex flex-col gap-2 transition animate-fade-in">
+                            <div class="flex justify-between items-center text-[8.5px] border-b pb-1 border-slate-100 font-medium text-slate-400">
+                                <span>Menunggu Verifikasi PMO</span>
+                                <span class="font-mono">09:12 WIB</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-700 flex items-center justify-center text-[9px] font-bold">RH</div>
+                                <div>
+                                    <span class="text-[10.5px] font-extrabold text-slate-800 block leading-none">Rian Hidayat (24 Thn)</span>
+                                    <span class="text-[7.5px] text-slate-400 block mt-0.5 font-medium">TB Paru SO (Sensitif Obat)</span>
+                                </div>
+                            </div>
+                            <!-- Mock Photo Upload Content Box -->
+                            <div class="w-full h-24 bg-slate-200 border border-slate-300 rounded-lg relative overflow-hidden flex items-center justify-center shadow-inner">
+                                <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&auto=format&fit=crop&q=60" alt="Foto Obat" class="w-full h-full object-cover">
+                                <div class="absolute bottom-1 left-1 bg-slate-900/70 backdrop-blur-xxs text-white text-[7px] font-bold px-1.5 py-0.5 rounded-md">
+                                    AI: Terdeteksi 3 PIL/OBAT (Valid)
+                                </div>
+                            </div>
+                            <div class="flex gap-2 text-[9.5px] font-extrabold mt-0.5">
+                                <button onclick="actionVerifyPhoto(false)" class="flex-1 py-1 bg-white border border-slate-200 text-rose-600 hover:bg-rose-50 rounded-lg transition active:scale-95">Tolak</button>
+                                <button onclick="actionVerifyPhoto(true)" class="flex-1 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-xs transition active:scale-95">Verifikasi Cocok</button>
+                            </div>
+                        </div>
+                        <div id="verification-empty" class="hidden text-center py-4 text-slate-400 text-[9.5px]">
+                            <i class="fa-solid fa-circle-check text-emerald-500 text-lg block mb-1"></i>
+                            Semua foto laporan asinkron telah bersih diverifikasi.
+                        </div>
+                    </div>
+
+                    <!-- Red Flag Detection Panel (List of High-risk Patients) -->
+                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-xs flex flex-col gap-2">
+                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider flex justify-between items-center">
+                            <span>Red Flag Detection Panel</span>
+                            <span class="px-1.5 py-0.2 bg-rose-50 text-rose-600 border border-rose-100 text-[7px] font-bold rounded-full">Prioritas Tinggi</span>
+                        </span>
+                        
+                        <div id="red-flag-list" class="space-y-1.5">
+                            <div id="red-flag-empty" class="text-center py-4 text-slate-400 text-[9.5px]">
+                                <i class="fa-solid fa-circle-check text-emerald-500 text-lg block mb-1"></i>
+                                Semua pasien tertib mematuhi asinkron hari ini.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Puskesmas Triad Group Monitoring -->
+                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-xs flex flex-col gap-2">
+                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">Antrean Uji Mikroskopis Puskesmas</span>
+                        <div class="space-y-1.5 text-[9px]">
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-slate-50 border border-slate-100">
+                                <div class="flex items-center gap-2">
+                                    <div class="p-1 bg-emerald-100 text-emerald-700 rounded text-[8px] font-bold">1</div>
+                                    <span class="font-bold text-slate-700">Ny. Rina Amalia</span>
+                                </div>
+                                <span class="text-[8px] text-amber-600 font-bold">Menunggu Analisis Slide</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SCREEN 2: 3-MODEL SPUTUM SCREENING (Nakes Mikroskopis) -->
+                <div id="screen-skrining" class="hidden flex flex-col gap-3 animate-fade-in flex-1 h-full min-h-[350px]">
+                    <div class="flex justify-between items-center pb-1 border-b border-slate-100">
+                        <span class="text-[11px] font-bold text-slate-800 flex items-center gap-1">
+                            <i class="fa-solid fa-microscope text-emerald-600"></i>
+                            Pemeriksaan Mikroskopis BTA
+                        </span>
+                    </div>
+
+                    <!-- Step-by-Step Scenario Selector for Demo (Ideal model only based on image_245c05.png) -->
+                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-xxs">
+                        <span class="text-[8px] text-slate-400 font-extrabold block mb-2 uppercase tracking-wider">SIMULASI KUALITAS PEWARNAAN SLIDE:</span>
+                        <div class="w-full">
+                            <button id="scenario-ideal" class="w-full py-2 rounded-full text-[9px] font-extrabold text-center transition bg-emerald-600 text-white border border-emerald-500 tracking-wider shadow-sm">
+                                PEWARNAAN IDEAL
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Slide Microscope Viewport Mockup -->
+                    <div class="flex-1 min-h-[220px] border border-slate-250 bg-slate-900 rounded-xl relative overflow-hidden flex flex-col items-center justify-center p-3">
+                        
+                        <!-- CAMERA STATE 1: VIEWPORT READY -->
+                        <div id="screen-camera-view" class="flex flex-col items-center text-center gap-2">
+                            <!-- Simulated Microscope Grid View -->
+                            <div class="w-20 h-20 rounded-full border border-slate-700 bg-teal-950/20 flex items-center justify-center relative overflow-hidden shadow-inner mb-1">
+                                <!-- Crosshairs of microscopic scale -->
+                                <div class="absolute inset-0 w-full h-[0.5px] bg-white/10 top-1/2"></div>
+                                <div class="absolute inset-0 h-full w-[0.5px] bg-white/10 left-1/2"></div>
+                                <div class="w-16 h-16 rounded-full border border-dashed border-white/5 flex items-center justify-center">
+                                    <!-- Pink Rod SVG representation of Bacteria BTA under Ziehl-Neelsen staining -->
+                                    <svg viewBox="0 0 100 100" class="w-8 h-8 text-rose-400 opacity-60 rotate-45 animate-pulse">
+                                        <rect x="20" y="45" width="60" height="10" rx="5" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <span class="font-extrabold text-white text-[10px] block">Unggah/Pindai Foto Mikroskopis</span>
+                                <p class="text-[8px] text-slate-450 max-w-[210px] mx-auto mt-0.5 leading-normal">
+                                    Unggah citra slide sputum dari mikroskop digital untuk memicu pipa pemrosesan 3 model: QC $\rightarrow$ Deteksi $\rightarrow$ Eliminasi.
+                                </p>
+                            </div>
+                            
+                            <!-- Upload Trigger Button -->
+                            <button onclick="startMicroscopicAnalysis()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-3 py-1.5 rounded-lg text-[8.5px] mt-1 shadow-xs transition active:scale-95">
+                                <i class="fa-solid fa-file-arrow-up mr-1"></i> Mulai Analisis 3 Tahap
+                            </button>
+                        </div>
+
+                        <!-- CAMERA STATE 2: LOADING PIPELINE WITH 3-STEP FLOW INDICATOR -->
+                        <div id="screen-camera-loading" class="hidden flex flex-col justify-center items-center w-full h-full gap-3 text-white">
+                            <div class="w-6 h-6 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin"></div>
+                            
+                            <div class="w-full px-4 space-y-1.5 text-left text-[8.5px]">
+                                <!-- Status Stage 1: RepVGG-A Color Check -->
+                                <div id="status-step-1" class="flex justify-between items-center bg-slate-800/80 p-1.5 rounded border border-slate-700">
+                                    <span class="font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                        Tahap 1: RepVGG-A (Pewarnaan QC)
+                                    </span>
+                                    <span id="step-1-result" class="font-mono text-[7.5px] text-amber-500 font-bold">MENGANALISIS...</span>
+                                </div>
+
+                                <!-- Status Stage 2: YOLOv8 Bounding Boxes -->
+                                <div id="status-step-2" class="flex justify-between items-center bg-slate-800/40 p-1.5 rounded border border-slate-700 opacity-50">
+                                    <span class="font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                                        Tahap 2: YOLO (Deteksi Bakteri)
+                                    </span>
+                                    <span id="step-2-result" class="font-mono text-[7.5px] text-slate-500 font-bold">MENUNGGU...</span>
+                                </div>
+
+                                <!-- Status Stage 3: RepVGG-B Filtering -->
+                                <div id="status-step-3" class="flex justify-between items-center bg-slate-800/40 p-1.5 rounded border border-slate-700 opacity-50">
+                                    <span class="font-bold flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                                        Tahap 3: RepVGG-B (Eliminasi Noise)
+                                    </span>
+                                    <span id="step-3-result" class="font-mono text-[7.5px] text-slate-500 font-bold">MENUNGGU...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CAMERA STATE 3: RESULTS AND BACTERIA PREVIEWS -->
+                        <div id="screen-camera-result" class="hidden flex flex-col gap-2 w-full animate-fade-in text-slate-800">
+                            
+                            <!-- Microscopic Sputum Success / Failure Banner -->
+                            <div id="analysis-alert-box" class="p-2 bg-white rounded-lg border border-slate-200 text-left text-[9px] space-y-1">
+                                <div class="flex justify-between items-center border-b pb-1 border-slate-100">
+                                    <span class="font-extrabold text-[8px] text-slate-400 uppercase">PIPELINE DIAGNOSTIK SELESAI:</span>
+                                    <span id="result-status-badge" class="px-1.5 py-0.2 font-extrabold text-[7px] rounded uppercase bg-rose-50 text-rose-700">TERINDIKASI</span>
+                                </div>
+                                <div id="analysis-summary-text" class="space-y-1">
+                                    <!-- Dynamic text updated by JS -->
+                                </div>
+                            </div>
+
+                            <!-- Crops Gallery Title -->
+                            <div id="crops-gallery-container" class="space-y-1 text-left hidden">
+                                <span class="text-[8px] text-slate-350 font-extrabold uppercase block tracking-wider"><i class="fa-solid fa-filter"></i> Potongan Bakteri Hasil Seleksi RepVGG-B:</span>
+                                <div class="grid grid-cols-4 gap-1 p-1 bg-slate-900 rounded-lg max-h-[55px] overflow-y-auto scrollbar-none">
+                                    <!-- Microscopic crops representing genuine rod-shaped bacteria -->
+                                    <div class="bg-slate-800 p-0.5 rounded flex items-center justify-center border border-emerald-500/30">
+                                        <div class="w-full h-4 bg-rose-400/40 rounded rotate-12 flex items-center justify-center text-[5px] text-rose-100 font-extrabold">BTA #1</div>
+                                    </div>
+                                    <div class="bg-slate-800 p-0.5 rounded flex items-center justify-center border border-emerald-500/30">
+                                        <div class="w-full h-4 bg-rose-400/40 rounded -rotate-12 flex items-center justify-center text-[5px] text-rose-100 font-extrabold">BTA #2</div>
+                                    </div>
+                                    <div class="bg-slate-800 p-0.5 rounded flex items-center justify-center border border-emerald-500/30">
+                                        <div class="w-full h-4 bg-rose-400/40 rounded rotate-45 flex items-center justify-center text-[5px] text-rose-100 font-extrabold">BTA #3</div>
+                                    </div>
+                                    <div class="bg-slate-800 p-0.5 rounded flex items-center justify-center border border-emerald-500/30">
+                                        <div class="w-full h-4 bg-rose-400/40 rounded -rotate-45 flex items-center justify-center text-[5px] text-rose-100 font-extrabold">BTA #4</div>
+                                    </div>
+                                </div>
+                                <p class="text-[7.5px] text-slate-350 leading-tight">Total deteksi YOLO: 5 objek. Lolos seleksi RepVGG-B: 4 objek. Berhasil dieliminasi: 1 noise pewarnaan.</p>
+                            </div>
+
+                            <div class="flex gap-1.5 mt-1 w-full">
+                                <button onclick="resetSputumScreen()" class="flex-1 py-1 bg-slate-100 hover:bg-slate-200 text-slate-650 rounded-lg text-[9px] font-extrabold transition">
+                                    Mulai Ulang
+                                </button>
+                                <button id="btn-sync-qr-direct" onclick="navigateTo('scan')" class="hidden flex-1 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[9px] font-extrabold transition shadow-xs">
+                                    Registrasi Akun QR
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SCREEN 3: SCAN QR PASIEN (Pre-registration Instant Sync) -->
+                <div id="screen-scan" class="hidden flex flex-col gap-3 animate-fade-in flex-1 h-full min-h-[350px]">
+                    <div class="flex justify-between items-center pb-1 border-b border-slate-100">
+                        <span class="text-[11px] font-bold text-slate-800 flex items-center gap-1">
+                            <i class="fa-solid fa-qrcode text-emerald-600"></i>
+                            Pindai QR Code Identitas Klinis
+                        </span>
+                    </div>
+
+                    <!-- QR Scanner Viewport Alignment -->
+                    <div class="flex-1 min-h-[240px] border-2 border-dashed border-emerald-300 rounded-xl relative overflow-hidden flex flex-col items-center justify-center bg-slate-100/65 p-3">
+                        
+                        <!-- SCANNER STATE 1: READY ALIGNMENT -->
+                        <div id="qr-scan-ready" class="flex flex-col items-center text-center gap-2">
+                            <!-- Animated alignment box representation -->
+                            <div class="w-24 h-24 border-2 border-emerald-500/40 rounded-xl flex items-center justify-center bg-white/20 relative shadow-inner mb-2 animate-pulse">
+                                <i class="fa-solid fa-expand text-emerald-500/30 text-5xl"></i>
+                                <span class="absolute w-full h-0.5 bg-emerald-500 top-0 animate-[bounce_2s_infinite]"></span>
+                            </div>
+                            <div>
+                                <span class="font-extrabold text-slate-800 text-[11.5px] block">Scan Kartu Pasien Terduga TB</span>
+                                <p class="text-[8.5px] text-slate-400 max-w-[200px] mx-auto mt-0.5 leading-normal">
+                                    Pindai QR Code yang berada di tab Profil aplikasi pasien (SPTH-9941-26) untuk sinkronisasi otomatis.
+                                </p>
+                            </div>
+                            <button onclick="triggerQRScanSuccess()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-3 py-1.5 rounded-lg text-[9px] mt-1 shadow-xs transition active:scale-95">
+                                Simulasikan Scan QR Pasien
+                            </button>
+                        </div>
+
+                        <!-- SCANNER STATE 2: SYNCING SUCCESS POPUP -->
+                        <div id="qr-scan-success" class="hidden flex flex-col items-center text-center gap-2.5 px-1.5 animate-fade-in w-full">
+                            <div class="w-9 h-9 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-700 flex items-center justify-center">
+                                <i class="fa-solid fa-shield-halved text-lg"></i>
+                            </div>
+
+                            <div class="text-center">
+                                <span class="font-extrabold text-emerald-800 text-xs block">SINKRONISASI SATUSEHAT SUKSES</span>
+                                <span class="text-[7.5px] text-slate-400 block font-bold uppercase tracking-wider mt-0.5">Akun Triad Terkunci Otomatis</span>
+                            </div>
+
+                            <!-- Integrated accounts list table -->
+                            <div class="bg-white border border-slate-150 p-2.5 rounded-lg text-[9px] text-left w-full space-y-1.5 shadow-xxs">
+                                <div class="flex justify-between items-center text-[8.5px] border-b pb-1 border-slate-100">
+                                    <span class="text-slate-400 font-bold">No. Registrasi</span>
+                                    <span class="font-mono font-extrabold text-slate-800">SPTH-9941-26</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[8.5px] border-b pb-1 border-slate-100">
+                                    <span class="text-slate-400 font-bold">Pasien Terkunci</span>
+                                    <span class="font-bold text-slate-800">Budi Santoso</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[8.5px] border-b pb-1 border-slate-100">
+                                    <span class="text-slate-400 font-bold">PMO Terkunci</span>
+                                    <span class="font-bold text-slate-800">Andi Susanto</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[8.5px]">
+                                    <span class="text-slate-400 font-bold">Nakes Puskesmas</span>
+                                    <span class="font-bold text-emerald-700">Dr. Sarah Wijaya</span>
+                                </div>
+                            </div>
+
+                            <p class="text-[8px] text-slate-400 leading-snug max-w-[200px] mx-auto">
+                                Semua kredensial masuk telah dibuat secara instan dan aman. Tidak ada entri manual birokrasi hulu-hilir lagi.
+                              </p>
+
+                            <button onclick="resetQRScanner()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-4 py-1.5 rounded-lg text-[9px] mt-1 shadow-xs transition active:scale-95">
+                                Selesai & Kembali ke Beranda
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCREEN 4: MONITORING PASIEN (Full 42 Patients List & Filters, matching image_245cde.png) -->
+                <div id="screen-monitoring" class="hidden flex flex-col gap-3 animate-fade-in">
+                    <div class="bg-white border border-slate-100 p-3 rounded-xl shadow-xs">
+                        <h4 class="text-[11px] font-bold text-slate-800 mb-1 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-list-check text-emerald-600"></i>
+                            Kepatuhan Pasien Asinkron
+                        </h4>
+                        <p class="text-[9px] text-slate-450 leading-snug">
+                            Peninjauan harian terhadap pengiriman bukti foto obat sore yang divalidasi oleh PMO masing-masing.
+                        </p>
+                    </div>
+
+                    <!-- Search & Filter Tab bar (Completely interactive and clickable) -->
+                    <div class="flex gap-1 bg-slate-100 p-1 rounded-lg text-[8.5px] font-bold">
+                        <button id="tab-all" onclick="filterPatientsList('all')" class="flex-1 py-1 rounded bg-white text-emerald-700 text-center shadow-xxs transition-all">SEMUA (42)</button>
+                        <button id="tab-beresiko" onclick="filterPatientsList('beresiko')" class="flex-1 py-1 rounded text-slate-500 text-center hover:bg-white/50 transition-all">BERESIKO (1)</button>
+                        <button id="tab-tertib" onclick="filterPatientsList('tertib')" class="flex-1 py-1 rounded text-slate-500 text-center hover:bg-white/50 transition-all">TERTIB (41)</button>
+                    </div>
+
+                    <!-- Dynamic Patients list items (No stray brackets, beautiful and clean layout) -->
+                    <div id="patients-list" class="space-y-1.5">
+                        <!-- Rendered programmatically via JS for exactly 42 entries -->
+                    </div>
+                </div>
+
+                <!-- SCREEN 5: SIMULASI PETA PATIENT TRACKING -->
+                <div id="screen-peta" class="hidden flex flex-col gap-2.5 animate-fade-in flex-1 h-full min-h-[350px]">
+                    <div class="bg-white border border-slate-100 p-2 rounded-xl shadow-xs">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-[10px] font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1">
+                                <i class="fa-solid fa-map-location-dot text-emerald-600"></i>
+                                Peta Pemantauan Triad
+                            </h4>
+                            <span class="px-1.5 py-0.2 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[7px] font-bold rounded-full">Radar Aktif</span>
+                        </div>
+                    </div>
+
+                    <!-- MAP CONTAINER BOX (SVG Schematic) -->
+                    <div class="flex-1 min-h-[220px] bg-slate-900 border border-slate-850 rounded-2xl relative overflow-hidden flex flex-col shadow-inner">
+                        
+                        <!-- MAP CANVAS WITH SVG OVERLAY -->
+                        <div class="absolute inset-0 z-10">
+                            <svg viewBox="0 0 300 220" class="w-full h-full">
+                                <!-- Grid Lines Background -->
+                                <defs>
+                                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="100%" height="100%" fill="url(#grid)" />
+
+                                <!-- DOTTED ROUTE LINES (Connecting Puskesmas to patients) -->
+                                <!-- 1. Puskesmas to Siti Aminah (Green/Stable) -->
+                                <path d="M 150 110 L 50 50" fill="none" stroke="#10b981" stroke-width="2" class="route-line" />
+                                
+                                <!-- 2. Puskesmas to Rian Hidayat (Amber/Pending) -->
+                                <path d="M 150 110 L 250 70" fill="none" stroke="#f59e0b" stroke-width="2" class="route-line" />
+                                
+                                <!-- 3. Puskesmas to Budi Santoso (Dynamic Green / Red-Dashed on Mangkir Alert) -->
+                                <path id="map-route-budi" d="M 150 110 L 110 180" fill="none" stroke="#10b981" stroke-width="2" class="route-line" />
+
+                                <!-- MAP NODE MARKERS -->
+                                <!-- Puskesmas Senen (Hub) -->
+                                <g transform="translate(150, 110)" class="cursor-pointer" onclick="selectMapNode('Puskesmas Kec. Senen', 'Pusat Distribusi & Pengawasan Klinis Dr. Sarah', 'Puskesmas Hub')">
+                                    <circle r="14" fill="#047857" opacity="0.3" class="map-pulse-active" />
+                                    <circle r="9" fill="#059669" />
+                                    <text y="3" text-anchor="middle" fill="#ffffff" font-size="8" font-family="FontAwesome">&#xf0f8;</text>
+                                </g>
+
+                                <!-- Patient Node 1: Siti Aminah (Green Active) -->
+                                <g transform="translate(50, 50)" class="cursor-pointer" onclick="selectMapNode('Siti Aminah', 'Alamat: Jl. Kramat II No. 12 (0.4 km)', 'Kepatuhan: 100% (Tertib)')">
+                                    <circle r="10" fill="#10b981" opacity="0.3" class="map-pulse-active" />
+                                    <circle r="6" fill="#10b981" />
+                                    <text y="2" text-anchor="middle" fill="#ffffff" font-size="6" font-family="FontAwesome">&#xf007;</text>
+                                </g>
+
+                                <!-- Patient Node 2: Rian Hidayat (Amber Pending) -->
+                                <g transform="translate(250, 70)" class="cursor-pointer" onclick="selectMapNode('Rian Hidayat', 'Alamat: Gang Sentiong No. 44 (1.1 km)', 'Status: Butuh Verifikasi Foto Lapor')">
+                                    <circle r="10" fill="#f59e0b" opacity="0.3" class="map-pulse-active" />
+                                    <circle r="6" fill="#f59e0b" />
+                                    <text y="2" text-anchor="middle" fill="#ffffff" font-size="6" font-family="FontAwesome">&#xf007;</text>
+                                </g>
+
+                                <!-- Patient Node 3: Budi Santoso (Dynamic Node Active/Danger) -->
+                                <g transform="translate(110, 180)" class="cursor-pointer" onclick="selectMapNode('Budi Santoso', 'Alamat: Jl. Salemba Tengah Gg. V No. 9 (0.8 km)', 'Status Kepatuhan: 96%')">
+                                    <circle id="map-node-pulse-budi" r="10" fill="#10b981" opacity="0.3" class="map-pulse-active" />
+                                    <circle id="map-node-budi" r="6" fill="#10b981" />
+                                    <text y="2" text-anchor="middle" fill="#ffffff" font-size="6" font-family="FontAwesome">&#xf007;</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <!-- MAP HUD / INTERACTIVE PANEL -->
+                        <div class="absolute bottom-2 left-2 right-2 bg-slate-950/95 border border-slate-800/80 rounded-xl p-2.5 z-20 text-white flex flex-col gap-1.5 animate-fade-in backdrop-blur-md">
+                            <div class="flex justify-between items-center border-b border-slate-800 pb-1">
+                                <span class="text-[8px] text-slate-400 font-bold uppercase tracking-wider">Detail Titik Terpilih:</span>
+                                <span id="map-hud-type" class="text-[7px] text-emerald-400 font-extrabold uppercase bg-emerald-950 px-1 py-0.2 rounded border border-emerald-900">Pasien</span>
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <h5 id="map-hud-name" class="text-[10px] font-extrabold leading-tight">Budi Santoso (ID: SPTH-9941-26)</h5>
+                                    <p id="map-hud-address" class="text-[8px] text-slate-400 mt-0.5">Alamat: Jl. Salemba Tengah Gg. V No. 9 (0.8 km)</p>
+                                    <p id="map-hud-status" class="text-[8px] text-emerald-500 font-semibold mt-0.2">Status Kepatuhan: 96% (Tertib)</p>
+                                </div>
+                                <div id="map-hud-btn" class="flex flex-col gap-1">
+                                    <button onclick="openWaModal(document.getElementById('map-hud-name').innerText.split('(')[0].trim())" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-2 py-1 rounded text-[7.5px] shadow transition active:scale-95 flex items-center gap-1">
+                                        <i class="fa-brands fa-whatsapp"></i> WA Pasien
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MAP LEGENDS (Top corner) -->
+                        <div class="absolute top-2 left-2 bg-slate-950/70 backdrop-blur-xs border border-slate-800/50 rounded-lg p-1.5 z-20 text-white text-[7px] space-y-1">
+                            <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 block"></span> <span>Tertib</span></div>
+                            <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 block"></span> <span>Pending Lapor</span></div>
+                            <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-rose-500 block animate-pulse"></span> <span>Mangkir (Red Flag)</span></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SCREEN 6: CHAT TRIAD (Direct Liaison with patient and PMO) -->
+                <div id="screen-chat" class="hidden flex flex-col gap-2.5 animate-fade-in flex-1 justify-between min-h-[350px]">
+                    <div class="flex-1 flex flex-col gap-2">
+                        
+                        <!-- Contact clinician mini-profile -->
+                        <div class="flex items-center gap-2 pb-1.5 border-b border-slate-100">
+                            <div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center font-extrabold text-emerald-700 border border-emerald-100 text-[10px] shadow-inner">
+                                BS
+                            </div>
+                            <div>
+                                <span class="text-[9.5px] font-extrabold text-slate-800 block leading-none">Budi Santoso (Pasien)</span>
+                                <span class="text-[7.5px] text-emerald-600 block font-bold flex items-center gap-1 mt-0.5">
+                                    <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    ID: SPTH-9941-26
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Messages Container -->
+                        <div id="chat-messages-container" class="flex-1 overflow-y-auto space-y-2 max-h-[190px] pr-0.5 scrollbar-none text-[9.5px] leading-normal">
+                            <div class="flex flex-col items-start">
+                                <div class="p-2 bg-white text-slate-700 border border-slate-200/80 rounded-xl rounded-tl-none shadow-xxs max-w-[85%]">
+                                    Halo Dokter Sarah, terima kasih hasil pelaporan foto obat sore saya sudah disetujui PMO hari ini.
+                                </div>
+                                <span class="text-[7px] text-slate-400 mt-0.5 px-0.5 font-bold">Kemarin, 18:15 WIB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inputs area -->
+                    <div class="flex flex-col gap-1 pt-1.5 border-t border-slate-100 bg-white sticky bottom-0">
+                        <form id="chat-form" onsubmit="handleChatSubmit(event)" class="flex gap-1">
+                            <input
+                                id="chat-input"
+                                type="text"
+                                placeholder="Ketik pesan peringatan atau konsultasi..."
+                                class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-[9.5px] text-slate-850 focus:outline-none focus:border-emerald-500 placeholder-slate-400 font-medium"
+                            />
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg transition shadow-xs">
+                                <i class="fa-solid fa-paper-plane text-xs"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Navigation Bar (Nakes Centered Icons with PETA) -->
+            <div class="bg-white border-t border-slate-100 px-1.5 py-2.5 flex justify-around items-center rounded-b-[38px] z-40 relative shadow-inner">
+                <button onclick="navigateTo('beranda')" id="nav-beranda" class="flex flex-col items-center gap-0.5 text-[7.5px] font-extrabold transition-all text-emerald-600 scale-105">
+                    <i class="fa-solid fa-house-medical text-xs"></i>
+                    <span>Beranda</span>
+                </button>
+                <button onclick="navigateTo('skrining')" id="nav-skrining" class="flex flex-col items-center gap-0.5 text-[7.5px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
+                    <i class="fa-solid fa-viruses text-xs"></i>
+                    <span>Skrining</span>
+                </button>
+                <button onclick="navigateTo('scan')" id="nav-scan" class="flex flex-col items-center gap-0.5 text-[7.5px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
+                    <i class="fa-solid fa-qrcode text-xs"></i>
+                    <span>Scan QR</span>
+                </button>
+                <!-- NEW MAP NAV ICON -->
+                <button onclick="navigateTo('peta')" id="nav-peta" class="flex flex-col items-center gap-0.5 text-[7.5px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
+                    <i class="fa-solid fa-map-location-dot text-xs"></i>
+                    <span>Peta</span>
+                </button>
+                <button onclick="navigateTo('monitoring')" id="nav-monitoring" class="flex flex-col items-center gap-0.5 text-[7.5px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
+                    <i class="fa-solid fa-users text-xs"></i>
+                    <span>Kepatuhan</span>
+                </button>
+                <button onclick="navigateTo('chat')" id="nav-chat" class="flex flex-col items-center gap-0.5 text-[7.5px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
+                    <i class="fa-solid fa-comments text-xs"></i>
+                    <span>Chat Triad</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- INTERACTIVE JAVASCRIPT GAMEPLAY / SIMULATOR LOGIC -->
+    <script>
+        // State variables
+        let isMangkirActive = false;
+        let currentFilter = 'all';
+
+        // Real dynamic Patient Database consisting of exactly 42 entries (1 High-risk / Beresiko, 41 Tertib)
+        let patientsData = [
+            { id: "SPTH-9941-26", name: "Budi Santoso", initial: "BS", compliance: 96, currentStatus: "Lapor Sore Terverifikasi", stock: 11, status: "Tertib" },
+            { id: "SPTH-9943-12", name: "Siti Aminah", initial: "SA", compliance: 100, currentStatus: "Lapor Sore Terverifikasi", stock: 18, status: "Tertib" },
+            { id: "SPTH-1021-01", name: "Rian Hidayat", initial: "RH", compliance: 88, currentStatus: "Menunggu Verifikasi PMO", stock: 14, status: "Beresiko" },
+            { id: "SPTH-2032-02", name: "Achmad Fauzi", initial: "AF", compliance: 98, currentStatus: "Lapor Sore Terverifikasi", stock: 22, status: "Tertib" },
+            { id: "SPTH-3041-03", name: "Dewi Lestari", initial: "DL", compliance: 100, currentStatus: "Lapor Sore Terverifikasi", stock: 24, status: "Tertib" },
+            { id: "SPTH-4052-04", name: "Bambang Hermawan", initial: "BH", compliance: 95, currentStatus: "Lapor Sore Terverifikasi", stock: 16, status: "Tertib" },
+            { id: "SPTH-5061-05", name: "Sri Wahyuni", initial: "SW", compliance: 97, currentStatus: "Lapor Sore Terverifikasi", stock: 19, status: "Tertib" },
+            { id: "SPTH-6072-06", name: "Joko Widodo", initial: "JW", compliance: 100, currentStatus: "Lapor Sore Terverifikasi", stock: 30, status: "Tertib" },
+            { id: "SPTH-7081-07", name: "Eko Prasetyo", initial: "EP", compliance: 99, currentStatus: "Lapor Sore Terverifikasi", stock: 12, status: "Tertib" },
+            { id: "SPTH-8092-08", name: "Kartika Sari", initial: "KS", compliance: 96, currentStatus: "Lapor Sore Terverifikasi", stock: 15, status: "Tertib" },
+            { id: "SPTH-9101-09", name: "Agus Setiawan", initial: "AS", compliance: 97, currentStatus: "Lapor Sore Terverifikasi", stock: 10, status: "Tertib" },
+            { id: "SPTH-1112-10", name: "Neneng Hasanah", initial: "NH", compliance: 98, currentStatus: "Lapor Sore Terverifikasi", stock: 21, status: "Tertib" },
+            { id: "SPTH-2121-11", name: "Dian Sastro", initial: "DS", compliance: 100, currentStatus: "Lapor Sore Terverifikasi", stock: 25, status: "Tertib" },
+            { id: "SPTH-3132-12", name: "Hendra Wijaya", initial: "HW", compliance: 95, currentStatus: "Lapor Sore Terverifikasi", stock: 14, status: "Tertib" },
+            { id: "SPTH-4141-13", name: "Lilik Indayati", initial: "LI", compliance: 99, currentStatus: "Lapor Sore Terverifikasi", stock: 17, status: "Tertib" },
+            { id: "SPTH-5152-14", name: "Muhammad Yusuf", initial: "MY", compliance: 96, currentStatus: "Lapor Sore Terverifikasi", stock: 11, status: "Tertib" },
+            { id: "SPTH-6161-15", name: "Fitriani", initial: "FT", compliance: 97, currentStatus: "Lapor Sore Terverifikasi", stock: 13, status: "Tertib" },
+            { id: "SPTH-7172-16", name: "Andi Pratama", initial: "AP", compliance: 100, currentStatus: "Lapor Sore Terverifikasi", stock: 20, status: "Tertib" },
+            { id: "SPTH-8181-17", name: "Rina Amalia", initial: "RA", compliance: 98, currentStatus: "Lapor Sore Terverifikasi", stock: 18, status: "Tertib" },
+            { id: "SPTH-9192-18", name: "Totok Sugiyanto", initial: "TS", compliance: 96, currentStatus: "Lapor Sore Terverifikasi", stock: 16, status: "Tertib" },
+            { id: "SPTH-1201-19", name: "Yuni Shara", initial: "YS", compliance: 95, currentStatus: "Lapor Sore Terverifikasi", stock: 22, status: "Tertib" },
+            { id: "SPTH-2212-20", name: "Rudi Hartono", initial: "RH", compliance: 100, currentStatus: "Lapor Sore Terverifikasi", stock: 28, status: "Tertib" },
+            { id: "SPTH-3221-21", name: "Megawati", initial: "MG", compliance: 97, currentStatus: "Lapor Sore Terverifikasi", stock: 15, status: "Tertib" },
+            { id: "SPTH-4232-22", name: "Anton Syahputra", initial: "AS", compliance: 99, currentStatus: "Lapor Sore Terverifikasi", stock: 19, status: "Tertib" },
+            { id: "SPTH-5241-23", name: "Siti Badriah", initial: "SB", compliance: 96, currentStatus: "Lapor Sore Terverifikasi", stock: 12, status: "Tertib" },
+            { id: "SPTH-6252-24", name: "Edi Suharto", initial: "ES", compliance: 98, currentStatus: "Lapor Sore Terverifikasi", stock: 24, status: "Tertib" },
+            { id: "SPTH-7261-25", name: "Ani Yudhoyono", initial: "AY", compliance: 100, currentStatus: "Lapor Sore Terverifikasi", stock: 27, status: "Tertib" },
+            { id: "SPTH-8272-26", name: "Guntur Bumi", initial: "GB", compliance: 95, currentStatus: "Lapor Sore Terverifikasi", stock: 10, status: "Tertib" },
+            { id: "SPTH-9281-27", name: "Wulan Guritno", initial: "WG", compliance: 99, currentStatus: "Lapor Sore Terverifikasi", stock: 14, status: "Tertib" },
+            { id: "SPTH-1292-28", name: "Basuki Tjahaja", initial: "BT", compliance: 97, currentStatus: "Lapor Sore Terverifikasi", stock: 18, status: "Tertib" },
+            { id: "SPTH-2301-29", name: "Susi Pudjiastuti", initial: "SP", compliance: 100, currentStatus: "Lapor Sore Terverifikasi", stock: 20, status: "Tertib" },
+            { id: "SPTH-3312-30", name: "Tri Risma", initial: "TR", compliance: 98, currentStatus: "Lapor Sore Terverifikasi", stock: 16, status: "Tertib" },
+            { id: "SPTH-4321-31", name: "Ganjar Pranowo", initial: "GP", compliance: 96, currentStatus: "Lapor Sore Terverifikasi", stock: 21, status: "Tertib" },
+            { id: "SPTH-5332-32", name: "Anies Baswedan", initial: "AB", compliance: 99, currentStatus: "Lapor Sore Terverifikasi", stock: 26, status: "Tertib" },
+            { id: "SPTH-6341-33", name: "Ridwan Kamil", initial: "RK", compliance: 97, currentStatus: "Lapor Sore Terverifikasi", stock: 15, status: "Tertib" },
+            { id: "SPTH-7352-34", name: "Khofifah Indar", initial: "KI", compliance: 100, currentStatus: "Lapor Sore Terverifikasi", stock: 23, status: "Tertib" },
+            { id: "SPTH-8361-35", name: "Prabowo Subianto", initial: "PS", compliance: 98, currentStatus: "Lapor Sore Terverifikasi", stock: 22, status: "Tertib" },
+            { id: "SPTH-9372-36", name: "Sandiaga Uno", initial: "SU", compliance: 96, currentStatus: "Lapor Sore Terverifikasi", stock: 17, status: "Tertib" },
+            { id: "SPTH-1381-37", name: "Erick Thohir", initial: "ET", compliance: 97, currentStatus: "Lapor Sore Terverifikasi", stock: 19, status: "Tertib" },
+            { id: "SPTH-2392-38", name: "Luhut Binsar", initial: "LB", compliance: 99, currentStatus: "Lapor Sore Terverifikasi", stock: 30, status: "Tertib" },
+            { id: "SPTH-3401-39", name: "Retno Marsudi", initial: "RM", compliance: 100, currentStatus: "Lapor Sore Terverifikasi", stock: 25, status: "Tertib" },
+            { id: "SPTH-4412-40", name: "Mahfud MD", initial: "MM", compliance: 98, currentStatus: "Lapor Sore Terverifikasi", stock: 14, status: "Tertib" }
+        ];
+
+        // Auto clock logic
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('phone-clock').innerText = `${hours}:${minutes} WIB`;
+        }
+        setInterval(updateClock, 60000);
+        updateClock();
+
+        // Screen Navigation
+        function navigateTo(screenId) {
+            // Hide all layouts
+            document.getElementById('screen-beranda').classList.add('hidden');
+            document.getElementById('screen-skrining').classList.add('hidden');
+            document.getElementById('screen-scan').classList.add('hidden');
+            document.getElementById('screen-monitoring').classList.add('hidden');
+            document.getElementById('screen-peta').classList.add('hidden');
+            document.getElementById('screen-chat').classList.add('hidden');
+
+            // Show target
+            document.getElementById('screen-' + screenId).classList.remove('hidden');
+
+            // Set highlighters
+            const navIds = ['beranda', 'skrining', 'scan', 'peta', 'monitoring', 'chat'];
+            navIds.forEach(id => {
+                const button = document.getElementById('nav-' + id);
+                if (id === screenId) {
+                    button.className = "flex flex-col items-center gap-0.5 text-[7.5px] font-extrabold transition-all text-emerald-600 scale-105";
+                } else {
+                    button.className = "flex flex-col items-center gap-0.5 text-[7.5px] font-extrabold transition-all text-slate-400 hover:text-slate-500";
+                }
+            });
+
+            if (screenId === 'monitoring') {
+                renderPatients(currentFilter);
+            }
+        }
+
+        // Render Patient List dynamically with full support for filters & interactive actions
+        function renderPatients(filter) {
+            const container = document.getElementById('patients-list');
+            container.innerHTML = '';
+
+            // Filter data
+            let filtered = [];
+            if (filter === 'all') {
+                filtered = patientsData;
+            } else if (filter === 'beresiko') {
+                filtered = patientsData.filter(p => p.status === 'Beresiko' || p.status === 'Mangkir');
+            } else if (filter === 'tertib') {
+                filtered = patientsData.filter(p => p.status === 'Tertib');
+            }
+
+            // Update Tab Badge and Active design states (matching image_245cde.png layout)
+            const allCount = patientsData.length;
+            const beresikoCount = patientsData.filter(p => p.status === 'Beresiko' || p.status === 'Mangkir').length;
+            const tertibCount = patientsData.filter(p => p.status === 'Tertib').length;
+
+            document.getElementById('tab-all').innerText = `SEMUA (${allCount})`;
+            document.getElementById('tab-beresiko').innerText = `BERESIKO (${beresikoCount})`;
+            document.getElementById('tab-tertib').innerText = `TERTIB (${tertibCount})`;
+
+            const tabIds = ['all', 'beresiko', 'tertib'];
+            tabIds.forEach(t => {
+                const tabBtn = document.getElementById('tab-' + t);
+                if (t === filter) {
+                    tabBtn.className = "flex-1 py-1 rounded bg-white text-emerald-700 text-center shadow-xxs transition-all";
+                } else {
+                    tabBtn.className = "flex-1 py-1 rounded text-slate-500 text-center hover:bg-white/50 transition-all";
+                }
+            });
+
+            // Loop and render cards
+            filtered.forEach(p => {
+                const statusColor = (p.status === 'Tertib') 
+                    ? 'bg-emerald-50 border-emerald-100 text-emerald-700' 
+                    : 'bg-rose-50 border-rose-100 text-rose-600 animate-pulse';
+
+                const detailAdherenceColor = (p.status === 'Tertib') ? 'text-emerald-700' : 'text-rose-600';
+                const showActionButtons = (p.status === 'Beresiko' || p.status === 'Mangkir');
+
+                const cardHtml = `
+                    <div class="bg-white p-2.5 rounded-xl border border-slate-100 shadow-xxs flex flex-col gap-1.5 animate-fade-in">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-700 text-[10px]">
+                                    ${p.initial}
+                                </div>
+                                <div>
+                                    <span class="font-extrabold text-slate-800 text-[10.5px] block leading-none">${p.name}</span>
+                                    <span class="text-[7.5px] text-slate-400 block mt-1 font-mono">ID: ${p.id}</span>
+                                </div>
+                            </div>
+                            <span class="px-1.5 py-0.2 border rounded text-[7.5px] font-extrabold uppercase ${statusColor}">${p.status}</span>
+                        </div>
+
+                        <div class="flex justify-between text-[8px] bg-slate-50 p-1.5 rounded border border-slate-100 font-bold">
+                            <div>
+                                <span class="text-slate-400 block">Kepatuhan</span>
+                                <span class="${detailAdherenceColor} mt-0.5 block text-[9.5px]">${p.compliance}% (${Math.round(p.compliance * 24 / 100)}/24)</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-slate-400 block">Status Hari Ini</span>
+                                <span class="mt-0.5 block text-[9.5px] ${p.status === 'Tertib' ? 'text-emerald-650' : 'text-rose-600'}">${p.currentStatus}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-slate-400 block">Sisa Stok</span>
+                                <span class="text-amber-600 mt-0.5 block text-[9.5px]">${p.stock} Tablet</span>
+                            </div>
+                        </div>
+
+                        ${showActionButtons ? `
+                            <div class="flex gap-1">
+                                <button onclick="openWaModal('${p.name}')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-1.5 rounded-lg text-[8.5px] transition shadow-xxs flex items-center justify-center gap-1">
+                                    <i class="fa-brands fa-whatsapp text-[10px]"></i> Kirim WA
+                                </button>
+                                <button onclick="scheduleHomeVisit()" class="flex-[2] bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-1.5 rounded-lg text-[8.5px] transition shadow-xxs flex items-center justify-center gap-1">
+                                    <i class="fa-solid fa-house-chimney-medical"></i> Atur Kunjungan Rumah
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        // Filter list switcher callback
+        function filterPatientsList(type) {
+            currentFilter = type;
+            renderPatients(type);
+        }
+
+        // Close Red flag Alert Banner
+        function closeRedNotification() {
+            document.getElementById('redflag-notification').classList.add('hidden');
+        }
+
+        // MODAL WHATSAPP HANDLERS
+        function openWaModal(name) {
+            document.getElementById('wa-penerima').innerText = name;
+            document.getElementById('wa-nama-isi').innerText = name;
+            document.getElementById('wa-modal').classList.remove('hidden');
+        }
+        
+        function closeWaModal() {
+            document.getElementById('wa-modal').classList.add('hidden');
+        }
+        
+        function sendWaNotification() {
+            closeWaModal();
+            alert("Peringatan WhatsApp sukses dikirim langsung ke nomor pasien!");
+            appendNakesMessage('nakes', "📢 [SISTEM AUTOMATION WA]: Peringatan kepatuhan minum obat pagi/sore berhasil dikirimkan via WhatsApp.");
+        }
+
+        // MAP CONTROLLER LOGIC
+        function selectMapNode(name, address, status) {
+            document.getElementById('map-hud-name').innerText = name;
+            document.getElementById('map-hud-address').innerText = address;
+            document.getElementById('map-hud-status').innerText = status;
+            
+            const badge = document.getElementById('map-hud-type');
+            if (name.includes('Puskesmas')) {
+                badge.innerText = 'Puskesmas';
+                badge.className = 'text-[7px] text-teal-400 font-extrabold uppercase bg-teal-950 px-1 py-0.2 rounded border border-teal-900';
+            } else {
+                badge.innerText = 'Pasien';
+                badge.className = 'text-[7px] text-emerald-400 font-extrabold uppercase bg-emerald-950 px-1 py-0.2 rounded border border-emerald-900';
+            }
+
+            if (name.includes('Budi') && isMangkirActive) {
+                document.getElementById('map-hud-status').innerText = 'Status: MANGKIR > 48 JAM (Red Flag) ⚠️';
+                document.getElementById('map-hud-status').className = 'text-[8px] text-rose-500 font-bold mt-0.2 animate-pulse';
+            } else if (!name.includes('Puskesmas')) {
+                document.getElementById('map-hud-status').className = 'text-[8px] text-emerald-500 font-semibold mt-0.2';
+            } else {
+                document.getElementById('map-hud-status').className = 'text-[8px] text-teal-400 font-semibold mt-0.2';
+            }
+        }
+
+        // PHOTO VERIFICATION HANDLERS
+        function actionVerifyPhoto(isSuccess) {
+            const card = document.getElementById('verification-card');
+            const empty = document.getElementById('verification-empty');
+            
+            if(isSuccess) {
+                alert("Foto laporan obat Rian Hidayat diverifikasi COCOK! Status kepatuhan pasien terbarui.");
+                document.getElementById('txt-pending-count').innerText = "0";
+                
+                // Update Rian Hidayat to Tertib in dataset
+                const rian = patientsData.find(p => p.id === "SPTH-1021-01");
+                if (rian) {
+                    rian.status = "Tertib";
+                    rian.currentStatus = "Lapor Sore Terverifikasi";
+                    rian.compliance = 92;
+                }
+            } else {
+                alert("Foto laporan obat Rian Hidayat DITOLAK! Notifikasi pelaporan ulang dikirimkan.");
+            }
+            card.classList.add('hidden');
+            empty.classList.remove('hidden');
+            renderPatients(currentFilter);
+        }
+
+        // Microscopic 3-Model Sputum Analysis Pipeline (Ideal flow only)
+        function startMicroscopicAnalysis() {
+            document.getElementById('screen-camera-view').classList.add('hidden');
+            document.getElementById('screen-camera-loading').classList.remove('hidden');
+
+            const step1 = document.getElementById('status-step-1');
+            const step1Result = document.getElementById('step-1-result');
+            const step2 = document.getElementById('status-step-2');
+            const step2Result = document.getElementById('step-2-result');
+            const step3 = document.getElementById('status-step-3');
+            const step3Result = document.getElementById('step-3-result');
+
+            // Reset loading view opacities
+            step1.className = "flex justify-between items-center bg-slate-800/80 p-1.5 rounded border border-slate-700";
+            step1Result.innerText = "MENGANALISIS...";
+            step1Result.className = "font-mono text-[7.5px] text-amber-500 font-bold";
+            
+            step2.className = "flex justify-between items-center bg-slate-800/40 p-1.5 rounded border border-slate-700 opacity-50";
+            step2Result.innerText = "MENUNGGU...";
+            
+            step3.className = "flex justify-between items-center bg-slate-800/40 p-1.5 rounded border border-slate-700 opacity-50";
+            step3Result.innerText = "MENUNGGU...";
+
+            // Stage 1: RepVGG-A Color Validation
+            setTimeout(() => {
+                step1.className = "flex justify-between items-center bg-emerald-950/80 p-1.5 rounded border border-emerald-800";
+                step1Result.innerText = "IDEAL / OK ✓";
+                step1Result.className = "font-mono text-[7.5px] text-emerald-500 font-extrabold";
+
+                // Stage 2: YOLO Box Detection
+                step2.className = "flex justify-between items-center bg-slate-800/80 p-1.5 rounded border border-slate-700";
+                step2Result.innerText = "MENGIDENTIFIKASI...";
+                step2Result.className = "font-mono text-[7.5px] text-amber-500 font-bold";
+
+                setTimeout(() => {
+                    step2.className = "flex justify-between items-center bg-emerald-950/80 p-1.5 rounded border border-emerald-800";
+                    step2Result.innerText = "5 OBAT/BTA ✓";
+                    step2Result.className = "font-mono text-[7.5px] text-emerald-500 font-extrabold";
+
+                    // Stage 3: RepVGG-B Bacteria Filtering
+                    step3.className = "flex justify-between items-center bg-slate-800/80 p-1.5 rounded border border-slate-700";
+                    step3Result.innerText = "FILTRASI NOISE...";
+                    step3Result.className = "font-mono text-[7.5px] text-amber-500 font-bold";
+
+                    setTimeout(() => {
+                        step3.className = "flex justify-between items-center bg-emerald-950/80 p-1.5 rounded border border-emerald-800";
+                        step3Result.innerText = "4 BTA TERSELEKSI ✓";
+                        step3Result.className = "font-mono text-[7.5px] text-emerald-500 font-extrabold";
+
+                        setTimeout(() => {
+                            showAnalysisResult(true);
+                        }, 1000);
+
+                    }, 1200);
+                }, 1200);
+            }, 1200);
+        }
+
+        // Show analysis details based on 3-model outputs
+        function showAnalysisResult(isSuccess) {
+            document.getElementById('screen-camera-loading').classList.add('hidden');
+            document.getElementById('screen-camera-result').classList.remove('hidden');
+
+            const badge = document.getElementById('result-status-badge');
+            const summary = document.getElementById('analysis-summary-text');
+            const cropsContainer = document.getElementById('crops-gallery-container');
+            const btnSync = document.getElementById('btn-sync-qr-direct');
+
+            badge.innerText = "POSITIF (1+)";
+            badge.className = "px-1.5 py-0.2 font-extrabold text-[7px] rounded uppercase bg-rose-100 text-rose-700";
+            
+            summary.innerHTML = `
+                <p class="text-slate-700"><b>Langkah 1:</b> Pewarnaan slide BTA ideal (lolos validasi RepVGG-A).</p>
+                <p class="text-slate-700"><b>Langkah 2:</b> Deteksi YOLO mengidentifikasi 5 basil tahan asam.</p>
+                <p class="text-slate-700"><b>Langkah 3:</b> RepVGG-B memverifikasi 4 basil nyata & menyaring 1 noise.</p>
+                <p class="text-rose-600 font-extrabold mt-1">Status WHO: Terindikasi Positif TB (Kategori Skala 1+).</p>
+            `;
+            cropsContainer.classList.remove('hidden');
+            btnSync.classList.remove('hidden');
+        }
+
+        // Reset Sputum View
+        function resetSputumScreen() {
+            document.getElementById('screen-camera-view').classList.remove('hidden');
+            document.getElementById('screen-camera-loading').classList.add('hidden');
+            document.getElementById('screen-camera-result').classList.add('hidden');
+        }
+
+        // QR Code Scanned successfully simulator
+        function triggerQRScanSuccess() {
+            document.getElementById('qr-scan-ready').classList.add('hidden');
+            document.getElementById('qr-scan-success').classList.remove('hidden');
+        }
+
+        function resetQRScanner() {
+            document.getElementById('qr-scan-ready').classList.remove('hidden');
+            document.getElementById('qr-scan-success').classList.add('hidden');
+            navigateTo('beranda');
+        }
+
+        // SIMULATOR PANEL CONTROLLER ACTION: TRIGGER MANGKIR (RED FLAG)
+        function triggerSimulationMangkir() {
+            isMangkirActive = true;
+            document.getElementById('redflag-notification').classList.remove('hidden');
+            
+            // Set Stats
+            document.getElementById('card-redflag-count').className = "bg-rose-50 border-rose-200 text-rose-700 p-2 rounded-xl border shadow-xxs text-center transition";
+            document.getElementById('txt-redflag-count').innerText = "1";
+            document.getElementById('txt-redflag-count').className = "text-sm font-extrabold text-rose-700 block mt-0.5 animate-pulse";
+
+            // Modify Budi Santoso's dynamic state in dataset
+            const budi = patientsData.find(p => p.id === "SPTH-9941-26");
+            if (budi) {
+                budi.status = "Mangkir";
+                budi.compliance = 92;
+                budi.currentStatus = "Mangkir 3 Hari";
+            }
+
+            // Add Red flag card in Beranda list
+            const rList = document.getElementById('red-flag-list');
+            rList.innerHTML = `
+                <div id="red-flag-card-budi" class="bg-rose-50 p-2.5 rounded-lg border border-rose-100 text-[9.5px] animate-fade-in flex flex-col gap-1">
+                    <div class="flex justify-between items-center mb-0.5">
+                        <span class="font-bold text-rose-700 text-[7.5px] tracking-wide uppercase"><i class="fa-solid fa-triangle-exclamation"></i> MANGKIR > 48 JAM</span>
+                        <span class="text-rose-500 text-[8px] font-bold">Hari Ke-3</span>
+                    </div>
+                    <p class="font-extrabold text-slate-800 leading-tight">Budi Santoso (ID: SPTH-9941-26)</p>
+                    <p class="text-slate-500 text-[8px] leading-tight mt-0.5 mb-1.5">Terakhir lapor foto: 23 Juni 2026. PMO melaporkan kesulitan kontak langsung.</p>
+                    <div class="flex gap-1">
+                        <button onclick="openWaModal('Budi Santoso')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-1 rounded text-[8px] shadow-xxs transition flex items-center justify-center gap-1">
+                            <i class="fa-brands fa-whatsapp text-[9px]"></i> Peringatan WA
+                        </button>
+                        <button onclick="navigateTo('peta')" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-1 rounded text-[8px] shadow-xxs transition flex items-center justify-center gap-1">
+                            Lacak Di Peta
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // UPDATE MAP VISUALS DYNAMICALLY
+            const routeBudi = document.getElementById('map-route-budi');
+            const nodeBudi = document.getElementById('map-node-budi');
+            const pulseBudi = document.getElementById('map-node-pulse-budi');
+
+            if (routeBudi) routeBudi.setAttribute('stroke', '#ef4444');
+            if (nodeBudi) nodeBudi.setAttribute('fill', '#ef4444');
+            if (pulseBudi) {
+                pulseBudi.setAttribute('fill', '#ef4444');
+                pulseBudi.className.baseVal = "map-pulse-danger";
+            }
+
+            renderPatients(currentFilter);
+        }
+
+        // Reset simulation to safe state
+        function resetNakesSimulation() {
+            isMangkirActive = false;
+            document.getElementById('redflag-notification').classList.add('hidden');
+            
+            // Stats Reset
+            document.getElementById('card-redflag-count').className = "bg-white p-2 rounded-xl border border-slate-100 shadow-xxs text-center transition";
+            document.getElementById('txt-redflag-count').innerText = "0";
+            document.getElementById('txt-redflag-count').className = "text-sm font-extrabold text-slate-800 block mt-0.5";
+            document.getElementById('txt-pending-count').innerText = "1";
+
+            // Restore patient dataset values
+            const budi = patientsData.find(p => p.id === "SPTH-9941-26");
+            if (budi) {
+                budi.status = "Tertib";
+                budi.compliance = 96;
+                budi.currentStatus = "Lapor Sore Terverifikasi";
+            }
+
+            const rian = patientsData.find(p => p.id === "SPTH-1021-01");
+            if (rian) {
+                rian.status = "Beresiko";
+                rian.compliance = 88;
+                rian.currentStatus = "Menunggu Verifikasi PMO";
+            }
+
+            // Red flag card reset
+            document.getElementById('red-flag-list').innerHTML = `
+                <div id="red-flag-empty" class="text-center py-4 text-slate-400 text-[9.5px]">
+                    <i class="fa-solid fa-circle-check text-emerald-500 text-lg block mb-1"></i>
+                    Semua pasien tertib mematuhi asinkron hari ini.
+                </div>
+            `;
+
+            // Verification Card reset
+            document.getElementById('verification-card').classList.remove('hidden');
+            document.getElementById('verification-empty').classList.add('hidden');
+
+            // Reset camera views
+            resetSputumScreen();
+            resetQRScanner();
+
+            // Reset Chat Messages
+            document.getElementById('chat-messages-container').innerHTML = `
+                <div class="flex flex-col items-start">
+                    <div class="p-2 bg-white text-slate-700 border border-slate-200/80 rounded-xl rounded-tl-none shadow-xxs max-w-[85%]">
+                        Halo Dokter Sarah, terima kasih hasil pelaporan foto obat sore saya sudah disetujui PMO hari ini.
+                    </div>
+                    <span class="text-[7px] text-slate-400 mt-0.5 px-0.5 font-bold">Kemarin, 18:15 WIB</span>
+                </div>
+            `;
+
+            // RESTORE MAP VISUALS TO SAFE STATE
+            const routeBudi = document.getElementById('map-route-budi');
+            const nodeBudi = document.getElementById('map-node-budi');
+            const pulseBudi = document.getElementById('map-node-pulse-budi');
+
+            if (routeBudi) routeBudi.setAttribute('stroke', '#10b981');
+            if (nodeBudi) nodeBudi.setAttribute('fill', '#10b981');
+            if (pulseBudi) {
+                pulseBudi.setAttribute('fill', '#10b981');
+                pulseBudi.className.baseVal = "map-pulse-active";
+            }
+
+            // Restore Map HUD default
+            selectMapNode('Budi Santoso', 'Alamat: Jl. Salemba Tengah Gg. V No. 9 (0.8 km)', 'Status Kepatuhan: 96%');
+
+            renderPatients(currentFilter);
+            navigateTo('beranda');
+        }
+
+        // Schedule Home visit click action
+        function scheduleHomeVisit() {
+            alert("Jadwal Home Visit Berhasil Terkirim ke PMO!");
+            appendNakesMessage('nakes', "🔔 Sistem Triad: Dr. Sarah Wijaya telah menjadwalkan Kunjungan Rumah (Home Visit) untuk Anda hari ini pukul 14:00 WIB dikarenakan absen pelaporan foto obat sore.");
+        }
+
+        // Nakes Chat Liaison handling
+        function handleChatSubmit(event) {
+            event.preventDefault();
+            const input = document.getElementById('chat-input');
+            const val = input.value.trim();
+            if (!val) return;
+
+            appendNakesMessage('nakes', val);
+            input.value = '';
+
+            // Patient auto simulated response
+            setTimeout(() => {
+                appendNakesMessage('pasien', "Baik Dokter Sarah, maaf kemarin HP saya rusak dan tidak bisa kirim foto. Hari ini saya akan didampingi PMO Andi untuk langsung berobat dan mengambil foto obat di depan beliau.");
+            }, 1500);
+        }
+
+        function appendNakesMessage(sender, text) {
+            const container = document.getElementById('chat-messages-container');
+            const alignClass = sender === 'nakes' ? 'items-end' : 'items-start';
+            const bubbleClass = sender === 'nakes' 
+                ? 'bg-emerald-600 text-white rounded-tr-none shadow-xxs' 
+                : 'bg-white text-slate-700 border border-slate-200 rounded-tl-none shadow-xxs';
+
+            const msgHtml = `
+                <div class="flex flex-col ${alignClass} animate-fade-in">
+                    <div class="p-2 rounded-xl ${bubbleClass} max-w-[85%]">
+                        ${text}
+                    </div>
+                    <span class="text-[7px] text-slate-400 mt-0.5 px-0.5 font-bold">Baru saja</span>
+                </div>
+            `;
+            container.innerHTML += msgHtml;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Init patient database rendering on start
+        window.onload = function() {
+            renderPatients('all');
+        }
+    </script>
+</body>
+</html>
