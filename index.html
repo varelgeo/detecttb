@@ -103,7 +103,7 @@
             
             <!-- Top Status Bar -->
             <div class="px-5 pt-3.5 pb-1.5 flex justify-between items-center text-[9px] font-bold text-slate-450 z-40 bg-gradient-to-b from-slate-50 to-transparent">
-                <span id="phone-clock">17:41 WIB</span>
+                <span id="phone-clock">09:41 WIB</span>
                 <div class="flex gap-1 items-center">
                     <span class="text-[7.5px] bg-emerald-50 border border-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-bold">SIPATUH v1.0</span>
                     <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
@@ -117,12 +117,12 @@
                 </div>
                 <div class="flex-1 text-[11px]">
                     <div class="flex justify-between items-center mb-0.5">
-                        <span id="notif-title" class="font-extrabold text-emerald-800 text-[10.5px]">Lapor Obat Sore 💊</span>
+                        <span id="notif-title" class="font-extrabold text-emerald-800 text-[10.5px]">Lapor Obat Pagi 💊</span>
                         <button onclick="closeNotification()" class="text-slate-400 hover:text-slate-650">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </div>
-                    <p id="notif-desc" class="text-[9.5px] text-slate-500 leading-tight mb-2">Jadwal konsumsi obat sore Anda sudah tiba. Harap upload foto 4 tablet KDT sebelum Anda minum.</p>
+                    <p id="notif-desc" class="text-[9.5px] text-slate-500 leading-tight mb-2">Jadwal konsumsi obat pagi Anda sudah tiba. Harap upload foto 4 tablet KDT sebelum Anda minum.</p>
                     <button onclick="navigateTo('lapor')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[8.5px] font-bold flex items-center gap-1 transition shadow-xs">
                         <i class="fa-solid fa-camera"></i> Ambil Foto Obat
                     </button>
@@ -135,159 +135,105 @@
                 <!-- SCREEN 1: BERANDA -->
                 <div id="screen-beranda" class="flex flex-col gap-3 animate-fade-in">
                     
-                    <!-- Clinic Logo & Brand Header -->
-                    <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-emerald-100/30 shadow-xs">
-                        <div class="flex items-center gap-2">
-                            <div class="w-7 h-7 text-emerald-600">
-                                <svg viewBox="0 0 100 100" class="w-full h-full" fill="currentColor">
-                                    <path d="M45,25 C35,25 30,35 30,50 C30,65 37,75 45,75 C47,75 48,70 47,65 C45,55 45,45 47,35 C48,30 47,25 45,25 Z" />
-                                    <path d="M55,25 C65,25 70,35 70,50 C70,65 63,75 55,75 C53,75 52,70 53,65 C55,55 55,45 53,35 C52,30 53,25 55,25 Z" fill-opacity="0.8"/>
-                                    <circle cx="50" cy="50" r="10" fill="none" stroke="currentColor" stroke-width="4" />
-                                    <line x1="57" y1="57" x2="68" y2="68" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" />
-                                </svg>
-                            </div>
-                            <span class="text-sm font-extrabold tracking-tight text-emerald-800">DetectTB</span>
-                        </div>
-                        <div class="p-1.5 bg-slate-50 rounded-lg border border-slate-100 relative cursor-pointer">
-                            <i class="fa-regular fa-bell text-slate-500 text-xs"></i>
-                            <span class="absolute top-1 right-1 w-1 h-1 bg-rose-500 rounded-full"></span>
-                        </div>
-                    </div>
-
-                    <!-- Patient Info Board -->
-                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-xs flex flex-col gap-0.5">
-                        <span class="text-[9px] text-slate-400 font-bold">Nama Pasien:</span>
-                        <span class="text-xs font-extrabold text-slate-800 leading-none">Budi Santoso</span>
-                        <div class="flex justify-between items-center mt-1.5 pt-1.5 border-t border-slate-50">
-                            <span class="text-[9px] text-slate-500 font-mono">ID: SPTH-9941-26</span>
-                            <span class="text-[8px] bg-emerald-50 border border-emerald-100 text-emerald-700 font-extrabold px-2 py-0.5 rounded-full uppercase">
-                                Bulan ke-2
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Daily Dosage Checklist -->
-                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-xs flex flex-col gap-2">
-                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">Laporan Minum Obat Hari Ini</span>
-                        
-                        <div class="space-y-1.5">
-                            <!-- Morning Dose (Completed) -->
-                            <div class="flex justify-between items-center p-2 rounded-lg bg-slate-50 border border-slate-100">
-                                <div class="flex items-center gap-2">
-                                    <div class="p-1.5 bg-emerald-50 text-emerald-700 rounded">
-                                        <i class="fa-solid fa-pills text-xs"></i>
-                                    </div>
-                                    <div>
-                                        <span class="text-[10px] font-extrabold text-slate-700 block">Dosis Pagi (08:00)</span>
-                                        <span class="text-[8px] text-emerald-600 font-bold">Verifikasi PMO Berhasil</span>
-                                    </div>
+                    <!-- Patient Gradient Header exactly matching design -->
+                    <div class="bg-gradient-to-b from-emerald-700 to-emerald-600 p-3.5 rounded-2xl text-white shadow-sm flex flex-col gap-3">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-full bg-white/20 border border-white/30 flex items-center justify-center font-bold text-white text-xs">
+                                    R
                                 </div>
-                                <span class="px-2 py-0.5 bg-emerald-500 text-white rounded text-[8px] font-extrabold flex items-center gap-1">
-                                    <i class="fa-solid fa-check"></i> OK
-                                </span>
-                            </div>
-
-                            <!-- Evening Dose (Active reporting) -->
-                            <div class="flex justify-between items-center p-2 rounded-lg bg-slate-50 border border-slate-100">
-                                <div class="flex items-center gap-2">
-                                    <div class="p-1.5 bg-slate-100 text-slate-450 rounded">
-                                        <i class="fa-solid fa-pills text-xs"></i>
-                                    </div>
-                                    <div>
-                                        <span class="text-[10px] font-extrabold text-slate-750 block">Dosis Sore (18:00)</span>
-                                        <span id="evening-subtext" class="text-[8px] text-slate-400 font-medium">Belum Melaporkan Foto</span>
-                                    </div>
+                                <div class="text-left">
+                                    <p class="text-[8px] opacity-80 leading-none">Pejuang Sembuh TBC</p>
+                                    <h2 class="text-xs font-bold leading-none mt-1">Rian Hidayat</h2>
                                 </div>
-                                <span id="evening-badge" class="px-2 py-0.5 bg-slate-200 text-slate-500 rounded text-[8px] font-extrabold">
-                                    Belum
-                                </span>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- NEW: Alur Distribusi Obat Card -->
-                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-xs flex flex-col">
-                        <span class="text-[10px] font-extrabold text-emerald-800 uppercase tracking-wider flex items-center gap-1">
-                            <i class="fa-solid fa-truck-ramp-box"></i> Alur Distribusi Obat
-                        </span>
-                        <p class="text-[8.5px] text-slate-450 leading-tight mt-1">
-                            Jangan sampai putus obat. Minta isi ulang obat ke Puskesmas Anda sebelum stok habis.
-                        </p>
-
-                        <!-- Stock Container Box -->
-                        <div class="bg-slate-50 border border-slate-100 p-2 rounded-lg mt-2 flex justify-between items-center text-[10px]">
-                            <div>
-                                <span class="text-[8px] text-slate-400 block font-bold leading-none">STOK SISA</span>
-                                <span id="stok-value" class="text-xs font-extrabold text-slate-800 mt-1 block">11 Tablet</span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-[8px] text-slate-400 block font-bold leading-none">CUKUP UNTUK</span>
-                                <span id="stok-duration" class="text-[10px] font-extrabold text-amber-600 mt-1 block">11 Hari Ke Depan</span>
+                            <div class="bg-white/10 px-2 py-0.5 rounded-full border border-white/20 flex items-center gap-1 text-[8.5px]">
+                                <i class="fa-solid fa-fire text-orange-400"></i>
+                                <span id="streak-badge-text" class="font-bold">14 Hari Patuh</span>
                             </div>
                         </div>
 
-                        <!-- Dynamic Switchable Section for Distribution Request -->
-                        <div id="distribution-action-block" class="mt-2.5">
-                            <button 
-                                onclick="requestDrugRefill()" 
-                                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-[9px] font-extrabold flex items-center justify-center gap-1.5 transition active:scale-[0.98] shadow-xs"
-                            >
-                                <i class="fa-solid fa-box-open"></i> Minta Refill Obat Baru
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Large Upload Photo CTA -->
-                    <div 
-                        onclick="navigateTo('lapor')"
-                        class="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white p-3 rounded-xl flex justify-between items-center cursor-pointer transition-all active:scale-[0.98] shadow-sm shadow-emerald-600/10"
-                    >
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-7 h-7 rounded-full bg-white flex items-center justify-center text-emerald-600">
-                                <i class="fa-solid fa-camera text-xs"></i>
-                            </div>
+                        <!-- Mini Clinical Adherence Indicator card -->
+                        <div class="bg-white rounded-xl p-2.5 shadow-sm flex justify-between items-center text-slate-800 text-[9.5px]">
                             <div class="text-left">
-                                <span class="text-[11px] font-extrabold block leading-tight">Kirim Bukti Foto Obat</span>
-                                <span class="text-[8.5px] text-emerald-100 block">Kirim foto konsumsi sore Anda ke PMO</span>
+                                <span class="text-[7.5px] text-slate-400 font-bold block uppercase tracking-wider">Faskes Pendamping</span>
+                                <span class="font-bold text-emerald-700"><i class="fa-solid fa-hospital-user mr-0.5"></i> Puskesmas Melati</span>
+                            </div>
+                            <div class="w-[1px] h-6 bg-slate-200"></div>
+                            <div class="text-right">
+                                <span class="text-[7.5px] text-slate-400 font-bold block uppercase tracking-wider">Sisa Obat Anda</span>
+                                <span id="sisa-stok-top-badge" class="font-bold text-slate-800">12 Tablet</span>
                             </div>
                         </div>
-                        <i class="fa-solid fa-angle-right text-emerald-200 text-sm mr-0.5"></i>
                     </div>
 
-                    <!-- Triad Direct Call (Doctor & Medication Supervisor) -->
-                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-xs flex flex-col gap-2.5">
-                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider">Tim Triad Pengawas Anda</span>
+                    <!-- Countdown Timer card for current morning schedule -->
+                    <div id="timer-active-card" class="bg-white border border-slate-100 rounded-2xl p-3 shadow-sm text-center relative overflow-hidden flex flex-col gap-1.5">
+                        <div class="absolute top-0 left-0 right-0 h-1 bg-amber-500"></div>
+                        <span class="inline-block mx-auto bg-amber-50 text-amber-800 text-[8.5px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Belum Dilaporkan</span>
+                        <h3 class="text-[11px] font-bold text-slate-900">Dosis Obat Pagi</h3>
+                        <p class="text-[8.5px] text-slate-500 -mt-1">Jadwal: Hari ini, 09:00 WIB</p>
+                        
+                        <!-- Real-time countdown clock ticks -->
+                        <div class="flex justify-center gap-2.5 my-0.5">
+                            <div class="bg-slate-50 px-2 py-1 rounded-lg border border-slate-100">
+                                <span class="text-xs font-bold text-slate-800 block">00</span>
+                                <span class="text-[7px] text-slate-450 uppercase font-bold">Jam</span>
+                            </div>
+                            <div class="bg-slate-50 px-2 py-1 rounded-lg border border-slate-100">
+                                <span id="timer-minutes" class="text-xs font-bold text-slate-800 block">14</span>
+                                <span class="text-[7px] text-slate-450 uppercase font-bold">Menit</span>
+                            </div>
+                            <div class="bg-slate-50 px-2 py-1 rounded-lg border border-slate-100">
+                                <span id="timer-seconds" class="text-xs font-bold text-slate-800 block">35</span>
+                                <span class="text-[7px] text-slate-450 uppercase font-bold">Detik</span>
+                            </div>
+                        </div>
+
+                        <!-- Direct Lapor CTA -->
+                        <button 
+                            onclick="navigateTo('lapor')"
+                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl shadow-md shadow-emerald-500/15 flex items-center justify-center gap-1.5 transition-all active:scale-95 text-[9.5px]"
+                        >
+                            <i class="fa-solid fa-camera"></i>
+                            Lapor Minum Obat Sekarang
+                        </button>
+                    </div>
+
+                    <!-- Direct Call Action (Tim Pendamping Triad) -->
+                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-xs flex flex-col gap-2">
+                        <span class="text-[8.5px] font-extrabold text-slate-400 uppercase tracking-wider">Tim Pendamping Triad Anda</span>
                         
                         <div class="space-y-1.5">
-                            <!-- PMO (Supervisor) -->
+                            <!-- Nakes -->
                             <div class="flex justify-between items-center p-1.5 rounded-lg bg-slate-50 border border-slate-100">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-7 h-7 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center font-extrabold text-teal-700 text-[10px]">
-                                        AS
+                                    <div class="w-6 h-6 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center font-extrabold text-teal-700 text-[9px]">
+                                        SA
                                     </div>
                                     <div>
-                                        <span class="text-[7.5px] text-slate-400 block font-bold leading-none">PMO (PENGAWAS OBAT)</span>
-                                        <span class="text-[10px] font-extrabold text-slate-700 block mt-0.5">Bpk. Andi Susanto</span>
+                                        <span class="text-[9.5px] font-extrabold text-slate-700 block leading-none">Suster Amanda (Nakes)</span>
+                                        <span class="text-[7.5px] text-slate-400 block mt-0.5">Puskesmas Melati - Aktif</span>
                                     </div>
                                 </div>
-                                <a href="tel:0812345678" class="p-1.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 rounded-full">
-                                    <i class="fa-solid fa-phone text-[10px]"></i>
-                                </a>
+                                <button onclick="navigateTo('pesan')" class="p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-full transition">
+                                    <i class="fa-solid fa-comment-dots text-[9px]"></i>
+                                </button>
                             </div>
 
-                            <!-- Doctor -->
+                            <!-- PMO -->
                             <div class="flex justify-between items-center p-1.5 rounded-lg bg-slate-50 border border-slate-100">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-7 h-7 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center font-extrabold text-emerald-700 text-[10px]">
-                                        SW
+                                    <div class="w-6 h-6 rounded-full bg-purple-50 border border-purple-100 flex items-center justify-center font-extrabold text-purple-700 text-[9px]">
+                                        PB
                                     </div>
                                     <div>
-                                        <span class="text-[7.5px] text-slate-400 block font-bold leading-none">DOKTER PUSKESMAS</span>
-                                        <span class="text-[10px] font-extrabold text-slate-700 block mt-0.5">Dr. Sarah Wijaya</span>
+                                        <span class="text-[9.5px] font-extrabold text-slate-700 block leading-none">Pak Budi (PMO)</span>
+                                        <span class="text-[7.5px] text-slate-400 block mt-0.5">Keluarga/Tetangga - Aktif</span>
                                     </div>
                                 </div>
-                                <a href="tel:0812345679" class="p-1.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 rounded-full">
-                                    <i class="fa-solid fa-phone text-[10px]"></i>
+                                <a href="https://wa.me/123456" target="_blank" class="p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-full transition">
+                                    <i class="fa-brands fa-whatsapp text-[9px]"></i>
                                 </a>
                             </div>
                         </div>
@@ -307,12 +253,12 @@
 
                         <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100 mb-2">
                             <div class="flex justify-between text-[8.5px] text-slate-400 mb-1.5 font-bold">
-                                <span class="text-slate-800">Juni 2026</span>
-                                <span id="adherence-rate" class="text-emerald-655">96% Sukses</span>
+                                <span class="text-slate-800">Mei 2026</span>
+                                <span id="adherence-rate" class="text-emerald-700 font-extrabold">93.3% Sukses</span>
                             </div>
 
                             <!-- Calendar grid 7 cols -->
-                            <div class="grid grid-cols-7 gap-1 text-center font-mono">
+                            <div class="grid grid-cols-7 gap-1 text-center font-mono text-[9px]">
                                 <div class="text-[7.5px] text-slate-450 font-extrabold py-0.5">S</div>
                                 <div class="text-[7.5px] text-slate-450 font-extrabold py-0.5">S</div>
                                 <div class="text-[7.5px] text-slate-450 font-extrabold py-0.5">R</div>
@@ -323,31 +269,28 @@
                                 
                                 <div></div><div></div><div></div><div></div>
 
-                                <!-- Filled Mock Days -->
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">1<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">2<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">3<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">4<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">5<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">6<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">7<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-rose-50 text-rose-700 border border-rose-100/60 text-[8px] font-bold flex flex-col">8<span>✗</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">9<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">10<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">11<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">12<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">13<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">14<span>✓</span></div>
-                                <div id="day-15" class="p-0.5 rounded bg-amber-50 text-amber-700 border border-amber-100/60 text-[8px] font-bold flex flex-col">15<span>L</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">16<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">17<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">18<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">19<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">20<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">21<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">22<span>✓</span></div>
-                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100/60 text-[8px] font-bold flex flex-col">23<span>✓</span></div>
-                                <div id="day-current" class="p-0.5 rounded bg-slate-100 text-slate-400 border border-slate-200 text-[8px] font-bold flex flex-col">24<span id="day-symbol">-</span></div>
+                                <!-- Filled Mock Days exactly like React App -->
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">1<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">2<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">3<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-rose-50 text-rose-700 border border-rose-100/60 text-[8px] font-bold flex flex-col items-center">4<span class="text-[6px] -mt-0.5">✗</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">5<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">6<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">7<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">8<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">9<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">10<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">11<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">12<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">13<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div class="p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center">14<span class="text-[6px] -mt-0.5">✓</span></div>
+                                <div id="day-current" class="p-0.5 rounded bg-slate-100 text-slate-400 border border-slate-200 text-[8px] font-bold flex flex-col items-center">15<span id="day-symbol" class="text-[6px] -mt-0.5">-</span></div>
+                                <div class="p-0.5 rounded bg-slate-50 text-slate-300 border border-slate-100/40 text-[8px] font-bold flex flex-col items-center">16</div>
+                                <div class="p-0.5 rounded bg-slate-50 text-slate-300 border border-slate-100/40 text-[8px] font-bold flex flex-col items-center">17</div>
+                                <div class="p-0.5 rounded bg-slate-50 text-slate-300 border border-slate-100/40 text-[8px] font-bold flex flex-col items-center">18</div>
+                                <div class="p-0.5 rounded bg-slate-50 text-slate-300 border border-slate-100/40 text-[8px] font-bold flex flex-col items-center">19</div>
+                                <div class="p-0.5 rounded bg-slate-50 text-slate-300 border border-slate-100/40 text-[8px] font-bold flex flex-col items-center">20</div>
+                                <div class="p-0.5 rounded bg-slate-50 text-slate-300 border border-slate-100/40 text-[8px] font-bold flex flex-col items-center">21</div>
                             </div>
                         </div>
 
@@ -355,28 +298,28 @@
                         <div class="flex justify-between items-center text-[7.5px] text-slate-500 px-0.5 pt-1.5 border-t border-slate-100">
                             <div class="flex items-center gap-1">
                                 <span class="w-2 h-2 rounded bg-emerald-100 border border-emerald-200"></span>
-                                <span>Tepat</span>
+                                <span>Patuh</span>
                             </div>
                             <div class="flex items-center gap-1">
                                 <span class="w-2 h-2 rounded bg-amber-100 border border-amber-200"></span>
-                                <span>Terlambat</span>
+                                <span>Menunggu Validasi</span>
                             </div>
                             <div class="flex items-center gap-1">
                                 <span class="w-2 h-2 rounded bg-rose-100 border border-rose-200"></span>
-                                <span>Mangkir</span>
+                                <span>Lupa Lapor</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Achievements gamified box -->
-                    <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-3 rounded-xl shadow-xs text-center">
-                        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-1.5">
-                            <i class="fa-solid fa-award text-sm"></i>
+                    <div class="bg-gradient-to-br from-emerald-600 to-emerald-700 text-white p-3.5 rounded-xl shadow-sm text-center flex flex-col gap-1">
+                        <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center mx-auto">
+                            <i class="fa-solid fa-award text-xs text-yellow-300"></i>
                         </div>
-                        <span class="text-[8px] text-emerald-100 block font-bold uppercase tracking-wider">Level Kepatuhan</span>
-                        <h4 class="text-[11px] font-bold text-white leading-tight">Pendekar Paru Sehat - Level 3</h4>
-                        <p class="text-[8.5px] text-emerald-100 mt-1 max-w-xs mx-auto leading-normal">
-                            Pertahankan disiplin lapor foto Anda! Lulus program asinkron dengan pantauan ketat demi paru-paru yang bersih.
+                        <span class="text-[7.5px] text-emerald-100 block font-bold uppercase tracking-wider">Level Kepatuhan</span>
+                        <h4 class="text-[10px] font-bold text-white leading-tight">Pendekar Paru Sehat - Level 3</h4>
+                        <p class="text-[8px] text-emerald-100 leading-normal max-w-xs mx-auto">
+                            Sembuh TBC itu pasti! Pertahankan kepatuhan minum obat Anda agar terhindar dari kuman kebal obat.
                         </p>
                     </div>
                 </div>
@@ -467,42 +410,89 @@
                     </div>
                 </div>
 
-                <!-- SCREEN 4: CHAT KONSULTASI (Direct Support Triad) -->
-                <div id="screen-pesan" class="hidden flex flex-col gap-2.5 animate-fade-in flex-1 justify-between min-h-[350px]">
+                <!-- SCREEN 4: PESEN OBAT (REFILL & TIMELINE) -->
+                <div id="screen-order" class="hidden flex flex-col gap-3 animate-fade-in">
+                    <div class="bg-white border border-slate-100 p-3.5 rounded-xl shadow-xs text-left">
+                        <h3 class="text-[11px] font-bold text-slate-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-prescription-bottle-medical text-emerald-600"></i>
+                            Alur Distribusi Obat (Refill)
+                        </h3>
+                        <p class="text-[9px] text-slate-450 mt-1 leading-normal">
+                            Jangan sampai putus obat. Ajukan pengisian sediaan OAT baru ke Puskesmas Anda sebelum sisa tablet Anda habis.
+                        </p>
+
+                        <!-- Sisa Stok current display box -->
+                        <div class="bg-slate-50 rounded-xl p-3 my-3 flex items-center justify-between border border-slate-100">
+                            <div>
+                                <span class="text-[8px] text-slate-400 font-extrabold block">SISA OBAT SAAT INI</span>
+                                <span id="refill-stok-count" class="text-sm font-bold text-slate-800">12 Tablet</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[8px] text-slate-400 font-extrabold block">ESTIMASI KEBUTUHAN</span>
+                                <span id="refill-stok-days" class="text-[10px] font-bold text-amber-600 block">12 Hari Saja</span>
+                            </div>
+                        </div>
+
+                        <!-- Interactive refill action placeholder -->
+                        <div id="refill-action-container" class="mt-2 text-center">
+                            <button 
+                                onclick="startRefillRequest()"
+                                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-[9.5px] flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm"
+                            >
+                                <i class="fa-solid fa-truck-ramp-box"></i> Minta Refill Obat Baru
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCREEN 5: CHAT KONSULTASI (LIVE CHAT DENGAN SUSTER AMANDA) -->
+                <div id="screen-chat" class="hidden flex flex-col gap-2.5 animate-fade-in flex-1 justify-between min-h-[350px]">
                     <div class="flex-1 flex flex-col gap-2">
                         
                         <!-- Contact clinician mini-profile -->
-                        <div class="flex items-center gap-2 pb-1.5 border-b border-slate-100">
+                        <div class="flex items-center gap-2 pb-1.5 border-b border-slate-100 text-left">
                             <div class="w-7 h-7 rounded-full bg-emerald-50 flex items-center justify-center font-extrabold text-emerald-700 border border-emerald-100 text-[10px] shadow-inner">
-                                SW
+                                SA
                             </div>
                             <div>
-                                <span class="text-[9.5px] font-extrabold text-slate-800 block leading-none">Dr. Sarah Wijaya</span>
+                                <span class="text-[9.5px] font-extrabold text-slate-800 block leading-none">Suster Amanda</span>
                                 <span class="text-[7.5px] text-emerald-600 block font-bold flex items-center gap-1 mt-0.5">
-                                    <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    Nakes Puskesmas • Aktif
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    Nakes Pendamping Puskesmas Melati
                                 </span>
                             </div>
                         </div>
 
                         <!-- Timeline Messages Container -->
-                        <div id="chat-messages-container" class="flex-1 overflow-y-auto space-y-2 max-h-[190px] pr-0.5 scrollbar-none text-[9.5px] leading-normal">
+                        <div id="chat-messages-container" class="flex-grow overflow-y-auto space-y-2.5 max-h-[190px] pr-0.5 scrollbar-none text-[9.5px] leading-normal">
                             <div class="flex flex-col items-start">
-                                <div class="p-2 bg-white text-slate-700 border border-slate-200/80 rounded-xl rounded-tl-none shadow-xxs max-w-[85%]">
-                                    Halo Pak Budi, hasil pantauan laporan foto minum obat sore kemarin sudah disetujui PMO. Terus pertahankan ya!
+                                <div class="p-2 bg-slate-100 text-slate-800 border border-slate-200/50 rounded-xl rounded-tl-none shadow-xxs max-w-[85%] text-left">
+                                    Halo Dek Rian, bagaimana kondisinya hari ini setelah minum obat merah? Apakah ada rasa mual?
                                 </div>
                                 <span class="text-[7px] text-slate-400 mt-0.5 px-0.5 font-bold">08:00 WIB</span>
+                            </div>
+                            <div class="flex flex-col items-end">
+                                <div class="p-2 bg-emerald-600 text-white rounded-xl rounded-tr-none shadow-xxs max-w-[85%] text-left">
+                                    Halo Suster Amanda, sedikit mual sus di awal, tapi sekarang sudah baikan setelah istirahat.
+                                </div>
+                                <span class="text-[7px] text-slate-400 mt-0.5 px-0.5 font-bold">08:15 WIB</span>
+                            </div>
+                            <div class="flex flex-col items-start">
+                                <div class="p-2 bg-slate-100 text-slate-800 border border-slate-200/50 rounded-xl rounded-tl-none shadow-xxs max-w-[85%] text-left">
+                                    Bagus, itu reaksi wajar di minggu-minggu awal. Pastikan makan pisang atau biskuit dulu sebelum minum obat ya. Tetap semangat!
+                                </div>
+                                <span class="text-[7px] text-slate-400 mt-0.5 px-0.5 font-bold">08:20 WIB</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Inputs area -->
+                    <!-- Inputs area with quick prompts -->
                     <div class="flex flex-col gap-1 pt-1.5 border-t border-slate-100 bg-white sticky bottom-0">
                         <div class="flex flex-wrap gap-0.5">
                             <button onclick="sendQuickMessage('Kenapa air kencing saya berwarna kemerahan?', 'urine')" class="text-[7.5px] bg-slate-50 hover:bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200/50 font-bold transition">
                                 Urine kemerahan?
                             </button>
-                            <button onclick="sendQuickMessage('Tips mengurangi mual setelah KDT?', 'mual')" class="text-[7.5px] bg-slate-50 hover:bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200/50 font-bold transition">
+                            <button onclick="sendQuickMessage('Tips mengurangi mual setelah makan obat KDT?', 'mual')" class="text-[7.5px] bg-slate-50 hover:bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200/50 font-bold transition">
                                 Tips mual KDT?
                             </button>
                         </div>
@@ -511,8 +501,8 @@
                             <input
                                 id="chat-input"
                                 type="text"
-                                placeholder="Tulis konsultasi..."
-                                class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-[9.5px] text-slate-850 focus:outline-none focus:border-emerald-500 placeholder-slate-400 font-medium"
+                                placeholder="Ketik keluhan atau efek samping..."
+                                class="flex-grow bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-[9.5px] text-slate-850 focus:outline-none focus:border-emerald-500 placeholder-slate-400 font-medium"
                             />
                             <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg transition shadow-xs">
                                 <i class="fa-solid fa-paper-plane text-xs"></i>
@@ -521,73 +511,7 @@
                     </div>
                 </div>
 
-                <!-- SCREEN 5: LAPOR GEJALA (Side-Effects Tracker) -->
-                <div id="screen-keluhan" class="hidden flex flex-col gap-3 animate-fade-in">
-                    <div class="bg-white border border-slate-100 p-3 rounded-xl shadow-xs">
-                        <h4 class="text-[11px] font-bold text-slate-800 mb-1 uppercase tracking-wider flex items-center gap-1.5">
-                            <i class="fa-solid fa-triangle-exclamation text-rose-500 animate-pulse"></i>
-                            Pencatatan Gejala
-                        </h4>
-                        <p class="text-[9px] text-slate-450 leading-snug mb-2.5">
-                            Segera lapor jika mengalami efek samping obat. Dokter & PMO akan mendeteksi tingkat bahaya keluhan Anda secara instan.
-                        </p>
-
-                        <!-- Symptom Selection buttons -->
-                        <div class="grid grid-cols-2 gap-1 mb-2.5">
-                            <button onclick="toggleSymptom(this, 'Mual Berat')" class="symptom-btn p-2 rounded-lg border text-[9.5px] font-bold text-left transition-all bg-slate-50 border-slate-100 text-slate-650 hover:border-slate-200">
-                                Mual Berat
-                            </button>
-                            <button onclick="toggleSymptom(this, 'Muntah')" class="symptom-btn p-2 rounded-lg border text-[9.5px] font-bold text-left transition-all bg-slate-50 border-slate-100 text-slate-650 hover:border-slate-200">
-                                Muntah
-                            </button>
-                            <button onclick="toggleSymptom(this, 'Nyeri Sendi')" class="symptom-btn p-2 rounded-lg border text-[9.5px] font-bold text-left transition-all bg-slate-50 border-slate-100 text-slate-650 hover:border-slate-200">
-                                Nyeri Sendi
-                            </button>
-                            <button onclick="toggleSymptom(this, 'Urine Kemerahan')" class="symptom-btn p-2 rounded-lg border text-[9.5px] font-bold text-left transition-all bg-slate-50 border-slate-100 text-slate-650 hover:border-slate-200">
-                                Urine Kemerahan
-                            </button>
-                        </div>
-
-                        <!-- Severity Selector -->
-                        <div class="bg-slate-50 p-2 rounded-lg border border-slate-100 mb-2.5">
-                            <span class="text-[8.5px] text-slate-400 block mb-1 font-bold">Skala Keparahan:</span>
-                            <div class="flex gap-1">
-                                <button onclick="selectSeverity('ringan')" id="sev-ringan" class="sev-btn flex-1 py-1 rounded text-[8.5px] font-extrabold uppercase transition bg-emerald-500 text-white">
-                                    ringan
-                                </button>
-                                <button onclick="selectSeverity('sedang')" id="sev-sedang" class="sev-btn flex-1 py-1 rounded text-[8.5px] font-extrabold uppercase transition bg-white border border-slate-200 text-slate-400">
-                                    sedang
-                                </button>
-                                <button onclick="selectSeverity('berat')" id="sev-berat" class="sev-btn flex-1 py-1 rounded text-[8.5px] font-extrabold uppercase transition bg-white border border-slate-200 text-slate-400">
-                                    berat
-                                </button>
-                            </div>
-                        </div>
-
-                        <button id="btn-submit-symptoms" onclick="submitSymptomLog()" disabled class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-100 disabled:text-slate-400 text-white font-extrabold py-2 rounded-lg text-[9.5px] transition shadow-xs">
-                            Kirim Laporan Keluhan
-                        </button>
-                    </div>
-
-                    <!-- Medical logs history list -->
-                    <div class="bg-white border border-emerald-50 p-2.5 rounded-xl shadow-xs">
-                        <span class="text-[8.5px] text-slate-400 block mb-1.5 uppercase tracking-wider font-extrabold">Riwayat Keluhan Medis</span>
-                        <div id="symptom-logs-list" class="space-y-1.5">
-                            <div class="bg-slate-50 p-2 rounded-lg border border-slate-100 text-[9px]">
-                                <div class="flex justify-between items-center mb-0.5">
-                                    <span class="font-bold text-slate-400 text-[7.5px]">26 Juni 2026</span>
-                                    <span class="px-1 py-0.2 bg-emerald-50 text-emerald-700 rounded text-[7px] font-extrabold uppercase">ringan</span>
-                                </div>
-                                <p class="font-extrabold text-slate-750 text-[10px] mb-1">Gejala: Urine Kemerahan</p>
-                                <p class="text-slate-550 text-[8.5px] bg-white p-1.5 rounded border border-slate-150 leading-tight">
-                                    💡 Catatan Dokter: Urine kemerahan adalah efek samping dari metabolisme obat Rifampisin. Sangat aman dan tidak membahayakan. Lanjutkan terapi obat Anda.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SCREEN 6: PROFIL (SATUSEHAT INTEGRATED CARD - EXACT IMAGE_165421 REPLICA) -->
+                <!-- SCREEN 6: PROFIL (SATUSEHAT INTEGRATED CARD) -->
                 <div id="screen-profil" class="hidden flex flex-col gap-3 animate-fade-in">
                     <div class="bg-white border border-slate-100 p-4 rounded-3xl text-center shadow-xs">
                         
@@ -601,43 +525,10 @@
                             Tunjukkan QR Code ini kepada Petugas Kesehatan di Puskesmas untuk verifikasi instan atau pengambilan obat.
                         </p>
 
-                        <!-- Simulated QR Code Card -->
+                        <!-- Simulated QR Code Card using public api generator -->
                         <div class="bg-slate-50/40 p-2.5 rounded-2xl inline-block mb-3.5 border border-slate-100/70 shadow-inner">
-                            <div class="w-32 h-32 bg-white flex items-center justify-center relative p-1.5 border border-emerald-100 rounded-xl">
-                                <svg class="w-full h-full text-slate-800" viewBox="0 0 100 100" fill="currentColor">
-                                    <!-- QR Code Corners -->
-                                    <rect x="5" y="5" width="25" height="25" fill="none" stroke="currentColor" stroke-width="4"/>
-                                    <rect x="10" y="10" width="15" height="15" />
-                                    <rect x="70" y="5" width="25" height="25" fill="none" stroke="currentColor" stroke-width="4"/>
-                                    <rect x="75" y="10" width="15" height="15" />
-                                    <rect x="5" y="70" width="25" height="25" fill="none" stroke="currentColor" stroke-width="4"/>
-                                    <rect x="10" y="75" width="15" height="15" />
-                                    <!-- QR Internal Noise Blocks -->
-                                    <rect x="35" y="5" width="6" height="12"/>
-                                    <rect x="45" y="15" width="12" height="6"/>
-                                    <rect x="60" y="5" width="6" height="6"/>
-                                    <rect x="35" y="25" width="12" height="6"/>
-                                    <rect x="52" y="25" width="6" height="15"/>
-                                    <rect x="64" y="20" width="18" height="6"/>
-                                    <rect x="5" y="35" width="12" height="6"/>
-                                    <rect x="5" y="45" width="6" height="12"/>
-                                    <rect x="15" y="52" width="15" height="6"/>
-                                    <rect x="35" y="45" width="12" height="18"/>
-                                    <rect x="52" y="48" width="18" height="6"/>
-                                    <rect x="75" y="35" width="6" height="18"/>
-                                    <rect x="85" y="45" width="10" height="6"/>
-                                    <rect x="5" y="60" width="12" height="6"/>
-                                    <rect x="35" y="70" width="6" height="12"/>
-                                    <rect x="45" y="75" width="12" height="6"/>
-                                    <rect x="45" y="85" width="6" height="10"/>
-                                    <rect x="60" y="70" width="12" height="12"/>
-                                    <rect x="75" y="60" width="20" height="6"/>
-                                    <rect x="75" y="70" width="6" height="18"/>
-                                    <rect x="85" y="75" width="10" height="15"/>
-                                    <!-- Center Heart Overlay -->
-                                    <rect x="42" y="42" width="16" height="16" fill="white" rx="3"/>
-                                    <path d="M50,47.5 C48.5,45 45,45 45,48.5 C45,51.5 50,54 50,54 C50,54 55,51.5 55,48.5 C55,45 51.5,45 50,47.5 Z" fill="#10b981" />
-                                </svg>
+                            <div class="w-32 h-32 bg-white flex items-center justify-center p-1.5 border border-emerald-100 rounded-xl shadow-xs">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=SIPATUH-PATIENT-RIAN-12345" alt="QR Code" class="w-full h-full object-contain">
                             </div>
                         </div>
 
@@ -657,45 +548,34 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Faskes Identification Details -->
-                    <div class="bg-white border border-slate-100 p-3 rounded-xl text-[9.5px] space-y-2 shadow-xs">
-                        <span class="font-extrabold text-slate-400 block uppercase tracking-wider text-[7.5px]">Identitas Faskes</span>
-                        <div class="flex gap-2 items-center bg-slate-50 p-2 rounded-lg border border-slate-100">
-                            <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded shrink-0">
-                                <i class="fa-solid fa-hospital-user text-xs"></i>
-                            </div>
-                            <div>
-                                <span class="text-slate-400 text-[7.5px] block font-bold leading-none">KLINIK PEMANTAU</span>
-                                <span class="font-extrabold text-slate-700 block text-[9.5px] mt-0.5">Puskesmas Kecamatan Senen</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
             </div>
 
-            <!-- Navigation Bar (Thinner for beautiful screen) -->
+            <!-- Navigation Bar exactly aligned with patient app -->
             <div class="bg-white border-t border-slate-100 px-1.5 py-2.5 flex justify-around items-center rounded-b-[38px] z-40 relative shadow-inner">
                 <button onclick="navigateTo('beranda')" id="nav-beranda" class="flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-emerald-600 scale-105">
-                    <i class="fa-solid fa-house text-xs"></i>
-                    <span>Beranda</span>
-                </button>
-                <button onclick="navigateTo('data')" id="nav-data" class="flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
-                    <i class="fa-solid fa-calendar-check text-xs"></i>
-                    <span>Kepatuhan</span>
-                </button>
-                <button onclick="navigateTo('lapor')" id="nav-lapor" class="flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
-                    <i class="fa-solid fa-camera text-xs"></i>
+                    <i class="fa-solid fa-house-chimney text-xs"></i>
                     <span>Lapor</span>
                 </button>
-                <button onclick="navigateTo('pesan')" id="nav-pesan" class="flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
-                    <i class="fa-solid fa-comment-medical text-xs"></i>
-                    <span>Pesan</span>
+                <button onclick="navigateTo('data')" id="nav-data" class="flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
+                    <i class="fa-solid fa-calendar text-xs"></i>
+                    <span>Kalender</span>
                 </button>
-                <button onclick="navigateTo('keluhan')" id="nav-keluhan" class="flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
-                    <i class="fa-solid fa-circle-exclamation text-xs"></i>
-                    <span>Keluhan</span>
+                <button onclick="navigateTo('order')" id="nav-order" class="flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
+                    <i class="fa-solid fa-prescription-bottle-medical text-xs"></i>
+                    <span>Pesan Obat</span>
+                </button>
+                <button onclick="navigateTo('chat')" id="nav-chat" class="flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
+                    <div class="relative">
+                        <i class="fa-solid fa-comments text-xs"></i>
+                        <span id="chat-notif-dot" class="absolute -top-1 -right-1.5 w-1.5 h-1.5 bg-rose-500 rounded-full"></span>
+                    </div>
+                    <span>Konsul</span>
+                </button>
+                <button onclick="navigateTo('profil')" id="nav-profil" class="flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-slate-400 hover:text-slate-500">
+                    <i class="fa-solid fa-qrcode text-xs"></i>
+                    <span>ID QR</span>
                 </button>
             </div>
 
@@ -704,273 +584,224 @@
 
     <!-- INTERACTIVE JAVASCRIPT GAMEPLAY / SIMULATOR LOGIC -->
     <script>
-        // State variables
+        // State variables matching React features
+        let adherenceState = 'not_reported'; // 'not_reported' | 'reported' | 'verified'
         let currentActiveScreen = 'beranda';
-        let hasReportedToday = false;
-        let selectedSymptoms = [];
-        let currentSeverity = 'ringan';
-        let refillStatusState = 'none'; // 'none', 'requesting', 'sent_approved'
+        let streakCount = 14;
+        let pillRemaining = 12;
+        let refillState = 'idle'; // 'idle' | 'requested' | 'approved' | 'ready_for_pickup'
 
-        // Auto clock logic
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('phone-clock').innerText = `${hours}:${minutes} WIB`;
+        // 1. Dynamic Countdown clock ticker
+        let minutesLeft = 14;
+        let secondsLeft = 35;
+        function tickTimer() {
+            if (adherenceState !== 'not_reported') return;
+            secondsLeft--;
+            if (secondsLeft < 0) {
+                secondsLeft = 59;
+                minutesLeft--;
+            }
+            if (minutesLeft < 0) {
+                minutesLeft = 0;
+                secondsLeft = 0;
+            }
+            document.getElementById('timer-minutes').innerText = String(minutesLeft).padStart(2, '0');
+            document.getElementById('timer-seconds').innerText = String(secondsLeft).padStart(2, '0');
         }
-        setInterval(updateClock, 60000);
-        updateClock();
+        setInterval(tickTimer, 1000);
 
-        // Screen Navigation
+        // Standard Navigation screen switcher
         function navigateTo(screenId) {
             // Hide all layouts
             document.getElementById('screen-beranda').classList.add('hidden');
             document.getElementById('screen-data').classList.add('hidden');
             document.getElementById('screen-lapor').classList.add('hidden');
-            document.getElementById('screen-pesan').classList.add('hidden');
-            document.getElementById('screen-keluhan').classList.add('hidden');
+            document.getElementById('screen-order').classList.add('hidden');
+            document.getElementById('screen-chat').classList.add('hidden');
             document.getElementById('screen-profil').classList.add('hidden');
 
-            // Show target
-            if (screenId === 'profil') {
-                document.getElementById('screen-profil').classList.remove('hidden');
-            } else {
-                document.getElementById('screen-' + screenId).classList.remove('hidden');
+            // Reset camera views if leaving lapor
+            if (screenId !== 'lapor') {
+                document.getElementById('camera-aligning').classList.remove('hidden');
+                document.getElementById('camera-scanning').classList.add('hidden');
+                document.getElementById('camera-verified-pills').classList.add('hidden');
             }
 
-            // Set highlighters
-            const navIds = ['beranda', 'data', 'lapor', 'pesan', 'keluhan'];
-            navIds.forEach(id => {
-                const button = document.getElementById('nav-' + id);
+            // Show active screen
+            document.getElementById('screen-' + screenId).classList.remove('hidden');
+
+            // Handle active tab state highlights
+            const tabIds = ['beranda', 'data', 'order', 'chat', 'profil'];
+            tabIds.forEach(id => {
+                const btn = document.getElementById('nav-' + id);
                 if (id === screenId) {
-                    button.className = "flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-emerald-600 scale-105";
+                    btn.className = "flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-emerald-600 scale-105";
                 } else {
-                    button.className = "flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-slate-400 hover:text-slate-500";
+                    btn.className = "flex flex-col items-center gap-0.5 text-[8px] font-extrabold transition-all text-slate-400 hover:text-slate-500";
                 }
             });
+
+            // If user opens chat, clear notification dot
+            if (screenId === 'chat') {
+                document.getElementById('chat-notif-dot').classList.add('hidden');
+            }
 
             currentActiveScreen = screenId;
         }
 
-        // Notification Close
+        // Standard notification close action
         function closeNotification() {
             document.getElementById('pills-notification').classList.add('hidden');
         }
 
-        // NEW FEATURE: Request Refill Medicine Handler
-        function requestDrugRefill() {
-            const actionBlock = document.getElementById('distribution-action-block');
-            
-            // Step 1: Show temporary requesting loader
-            actionBlock.innerHTML = `
-                <div class="flex items-center justify-center gap-2 py-1.5 bg-emerald-50 border border-emerald-100 rounded-lg text-emerald-700 text-[9px] font-bold">
-                    <div class="w-3.5 h-3.5 rounded-full border-2 border-emerald-600 border-t-transparent animate-spin"></div>
-                    <span>Mengirim permintaan Refill...</span>
-                </div>
-            `;
-
-            // Step 2: Show Timeline representing image_1653e0 after 1.2 seconds
-            setTimeout(() => {
-                refillStatusState = 'sent_approved';
-                renderDistributionTimeline();
-                
-                // Also trigger a system notification inside Chat to notify user
-                appendMessage('nakes', "🔔 Sistem Triad: Permintaan isi ulang OAT (Refill) Anda telah terkirim dan disetujui otomatis oleh Puskesmas. Anda dapat mengambil obat menggunakan QR Code Identitas Klinis.");
-            }, 1200);
-        }
-
-        function renderDistributionTimeline() {
-            const actionBlock = document.getElementById('distribution-action-block');
-            if (refillStatusState === 'sent_approved') {
-                actionBlock.innerHTML = `
-                    <div class="mt-2.5 space-y-2 border-l-2 border-emerald-500/20 pl-3.5 ml-2 relative animate-fade-in text-[9px] leading-tight text-slate-650">
-                        
-                        <!-- Timeline Point 1 (Active/Completed) -->
-                        <div class="relative">
-                            <span class="absolute -left-[19.5px] top-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-emerald-100 flex items-center justify-center text-[5px] text-white">✓</span>
-                            <span class="font-extrabold text-emerald-800 block text-[9.5px]">Permintaan Dikirim</span>
-                            <span class="text-[8px] text-slate-400 block font-medium mt-0.5">Hari ini, otomatis via sistem Triad</span>
-                        </div>
-
-                        <!-- Timeline Point 2 (Active/Completed) -->
-                        <div class="relative pt-1">
-                            <span class="absolute -left-[19.5px] top-1.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border border-emerald-100 flex items-center justify-center text-[5px] text-white">✓</span>
-                            <span class="font-extrabold text-emerald-800 block text-[9.5px]">Disetujui Nakes (Puskesmas)</span>
-                            <span class="text-[8px] text-slate-400 block font-medium mt-0.5">Verifikasi sisa obat selesai</span>
-                        </div>
-
-                        <!-- Timeline Point 3 (Pending pickup / Uncompleted) -->
-                        <div class="relative pt-1">
-                            <span class="absolute -left-[19.5px] top-1.5 w-2.5 h-2.5 rounded-full bg-slate-200 border border-slate-100"></span>
-                            <span class="font-bold text-slate-500 block text-[9.5px]">Obat Siap Diambil / Dikirim</span>
-                            <span class="text-[8px] text-slate-450 block font-medium mt-0.5">Gunakan QR Code Profil untuk verifikasi pengambilan</span>
-                        </div>
-
-                        <!-- Clickable quick redirect to profile QR -->
-                        <div class="pt-1">
-                            <button onclick="navigateTo('profil')" class="text-[8.5px] text-emerald-600 font-extrabold underline hover:text-emerald-700 transition">
-                                Lihat QR Code Pengambilan <i class="fa-solid fa-arrow-up-right-from-square text-[7px]"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            } else {
-                actionBlock.innerHTML = `
-                    <button 
-                        onclick="requestDrugRefill()" 
-                        class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-[9px] font-extrabold flex items-center justify-center gap-1.5 transition active:scale-[0.98] shadow-xs"
-                    >
-                        <i class="fa-solid fa-box-open"></i> Minta Refill Obat Baru
-                    </button>
-                `;
-            }
-        }
-
-        // Simulator Event: Late Medicine
-        function triggerSimulationLate() {
-            const notification = document.getElementById('pills-notification');
-            const title = document.getElementById('notif-title');
-            const desc = document.getElementById('notif-desc');
-
-            notification.classList.remove('hidden');
-            title.innerText = "⚠️ PERINGATAN KETERLAMBATAN";
-            title.className = "font-extrabold text-rose-700 text-[10.5px]";
-            desc.innerText = "Anda terlambat 2 jam! PMO Anda (Bpk. Andi Susanto) telah dikirimi peringatan dini otomatis oleh sistem SIPATUH.";
-            
-            // Adjust current day block to Late
-            document.getElementById('day-symbol').innerText = "L";
-            document.getElementById('day-current').className = "p-0.5 rounded bg-amber-50 text-amber-700 border border-amber-100/60 text-[8px] font-bold flex flex-col";
-        }
-
-        // Simulator Event: Reset App
-        function resetSimulation() {
-            hasReportedToday = false;
-            selectedSymptoms = [];
-            currentSeverity = 'ringan';
-            refillStatusState = 'none';
-
-            // Reset distribution action buttons
-            renderDistributionTimeline();
-
-            // Reset badges to unsubmitted state
-            document.getElementById('evening-badge').className = "px-2 py-0.5 bg-slate-200 text-slate-500 rounded text-[8px] font-extrabold";
-            document.getElementById('evening-badge').innerText = "Belum";
-            document.getElementById('evening-subtext').innerText = "Belum Melaporkan Foto";
-            document.getElementById('evening-subtext').className = "text-[8px] text-slate-400 font-medium";
-
-            // Calendar state reset
-            document.getElementById('day-symbol').innerText = "-";
-            document.getElementById('day-current').className = "p-0.5 rounded bg-slate-100 text-slate-400 border border-slate-200 text-[8px] font-bold flex flex-col";
-            document.getElementById('adherence-rate').innerText = "96% Sukses";
-
-            // Reset warnings
-            const notification = document.getElementById('pills-notification');
-            const title = document.getElementById('notif-title');
-            const desc = document.getElementById('notif-desc');
-            notification.classList.remove('hidden');
-            title.innerText = "Lapor Obat Sore 💊";
-            title.className = "font-extrabold text-emerald-800 text-[10.5px]";
-            desc.innerText = "Jadwal konsumsi obat sore Anda sudah tiba. Harap upload foto 4 tablet KDT sebelum Anda minum.";
-
-            // Camera View reset
-            document.getElementById('camera-aligning').classList.remove('hidden');
-            document.getElementById('camera-scanning').classList.add('hidden');
-            document.getElementById('camera-verified-pills').classList.add('hidden');
-
-            // Reset Chat list
-            document.getElementById('chat-messages-container').innerHTML = `
-                <div class="flex flex-col items-start">
-                    <div class="p-2 bg-white text-slate-700 border border-slate-200/80 rounded-xl rounded-tl-none shadow-xxs max-w-[85%]">
-                        Halo Pak Budi, hasil pantauan laporan foto minum obat sore kemarin sudah disetujui PMO. Terus pertahankan ya!
-                    </div>
-                    <span class="text-[7px] text-slate-400 mt-0.5 px-0.5 font-bold">08:00 WIB</span>
-                </div>
-            `;
-
-            // Reset Checklist Style
-            document.querySelectorAll('.symptom-btn').forEach(btn => {
-                btn.className = "symptom-btn p-2 rounded-lg border text-[9.5px] font-bold text-left transition-all bg-slate-50 border-slate-100 text-slate-650 hover:border-slate-200";
-            });
-            document.getElementById('btn-submit-symptoms').disabled = true;
-
-            navigateTo('beranda');
-        }
-
-        // Camera Action Simulation
+        // Camera capture states
         function startScanning() {
             document.getElementById('camera-aligning').classList.add('hidden');
             document.getElementById('camera-scanning').classList.remove('hidden');
 
-            // Simulate file storage and uploading compressions
             setTimeout(() => {
                 document.getElementById('camera-scanning').classList.add('hidden');
                 document.getElementById('camera-verified-pills').classList.remove('hidden');
-            }, 1500);
+            }, 1800);
         }
 
-        // Submit uploaded photo report to PMO asynchronously
+        // Finalize photo submission
         function finalizePillsReport() {
-            hasReportedToday = true;
-            
-            // Change Evening Badge to Waiting PMO verification status
-            const badge = document.getElementById('evening-badge');
-            badge.className = "px-2 py-0.5 bg-amber-500 text-white rounded text-[8px] font-extrabold shadow-xxs";
-            badge.innerText = "Menunggu";
+            adherenceState = 'reported';
+            streakCount = 15;
+            pillRemaining = 11;
 
-            const subtext = document.getElementById('evening-subtext');
-            subtext.innerText = "Menunggu Verifikasi PMO";
-            subtext.className = "text-[8px] text-amber-600 font-extrabold animate-pulse";
+            // Update Beranda display values
+            document.getElementById('streak-badge-text').innerHTML = `${streakCount} Hari Patuh`;
+            document.getElementById('sisa-stok-top-badge').innerText = `${pillRemaining} Tablet`;
+            document.getElementById('refill-stok-count').innerText = `${pillRemaining} Tablet`;
+            document.getElementById('refill-stok-days').innerText = `${pillRemaining} Hari Saja`;
 
-            // Calendar status turns waiting
-            document.getElementById('day-symbol').innerText = "✓";
-            document.getElementById('day-current').className = "p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100 text-[8px] font-bold flex flex-col";
-
+            // Hide countdown timer card / hide warning top toast
+            document.getElementById('timer-active-card').classList.add('hidden');
             closeNotification();
+
+            // Highlight calendar Day 15 as waiting verification (amber color state)
+            const dayCurrent = document.getElementById('day-current');
+            dayCurrent.className = "p-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200 text-[8px] font-bold flex flex-col items-center";
+            document.getElementById('day-symbol').innerText = "✓";
+
+            // Open popup confirmation and go back to home screen
             navigateTo('beranda');
 
-            // MOCK: Auto validation after 3 seconds by the PMO to simulate the interactive ecosystem
+            // Trigger simulated async approval from PMO after 4 seconds
             setTimeout(() => {
-                badge.className = "px-2 py-0.5 bg-emerald-500 text-white rounded text-[8px] font-extrabold shadow-xxs animate-bounce";
-                badge.innerHTML = `<i class="fa-solid fa-check"></i> Selesai`;
-                
-                subtext.innerText = "Laporan Disetujui PMO";
-                subtext.className = "text-[8px] text-emerald-600 font-extrabold";
-                
+                adherenceState = 'verified';
+                // Day 15 in calendar becomes verified green checkmark
+                dayCurrent.className = "p-0.5 rounded bg-emerald-50 text-emerald-750 border border-emerald-100/60 text-[8px] font-bold flex flex-col items-center";
                 document.getElementById('adherence-rate').innerText = "100% Sukses";
-                
-                // Trigger alert chat from PMO
-                appendMessage('nakes', "🔔 PMO (Bpk. Andi Susanto) menyetujui laporan foto sore Anda. Terus pertahankan kedisiplinan minum obat Anda!");
-            }, 3000);
+
+                // Push automatic confirmation alert into consultation chat
+                appendConsultMessage('nakes', "🔔 Suster Amanda (Puskesmas Melati) telah memverifikasi bukti foto obat pagi Anda. Kepatuhan Hari Ke-15 Sukses! Pertahankan kedisiplinan Anda.");
+                document.getElementById('chat-notif-dot').classList.remove('hidden');
+            }, 4000);
         }
 
-        // Direct consultations & chat simulator
+        // Alur Refill Medication Simulator
+        function startRefillRequest() {
+            const container = document.getElementById('refill-action-container');
+            
+            // Show dynamic progress loader inside block
+            container.innerHTML = `
+                <div class="flex items-center justify-center gap-1.5 py-2 bg-emerald-50 border border-emerald-100 rounded-xl text-emerald-700 text-[9.5px] font-bold">
+                    <div class="w-3.5 h-3.5 rounded-full border-2 border-emerald-600 border-t-transparent animate-spin"></div>
+                    <span>Mengajukan permintaan...</span>
+                </div>
+            `;
+
+            // Transition stage 1: Sent / Requested
+            setTimeout(() => {
+                refillState = 'requested';
+                updateRefillTimeline();
+
+                // Trigger Step 2: Approved automatically after 3 seconds for mock presentation
+                setTimeout(() => {
+                    refillState = 'approved';
+                    updateRefillTimeline();
+
+                    // Trigger Step 3: Ready for pickup automatically after 3 seconds
+                    setTimeout(() => {
+                        refillState = 'ready_for_pickup';
+                        updateRefillTimeline();
+                        
+                        // Push alert message to consultation to notify patient
+                        appendConsultMessage('nakes', "🔔 Sistem Triad: Permintaan refill obat baru disetujui Puskesmas Melati. Silakan kunjungi Puskesmas dan tunjukkan QR Code Anda untuk mengambil obat.");
+                        document.getElementById('chat-notif-dot').classList.remove('hidden');
+                    }, 3000);
+
+                }, 3000);
+
+            }, 1200);
+        }
+
+        // Render timeline step exactly like React OAT layout
+        function updateRefillTimeline() {
+            const container = document.getElementById('refill-action-container');
+            
+            let timelineHtml = `
+                <div class="space-y-4 border-l-2 border-slate-200 ml-3 pl-5 py-2 text-left animate-fade-in">
+                    <!-- Step 1 -->
+                    <div class="relative">
+                        <div class="absolute -left-[27px] top-0 w-3.5 h-3.5 rounded-full bg-emerald-600 border-4 border-white shadow-xs"></div>
+                        <h4 class="text-[10px] font-bold text-slate-800">Permintaan Dikirim</h4>
+                        <p class="text-[8px] text-slate-400">Hari ini, otomatis via sistem Triad</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative">
+                        <div class="absolute -left-[27px] top-0 w-3.5 h-3.5 rounded-full border-4 border-white shadow-xs ${
+                            (refillState === 'approved' || refillState === 'ready_for_pickup') ? 'bg-emerald-600' : 'bg-slate-300'
+                        }"></div>
+                        <h4 class="text-[10px] font-bold ${(refillState === 'approved' || refillState === 'ready_for_pickup') ? 'text-slate-800' : 'text-slate-400'}">Disetujui Nakes (Puskesmas)</h4>
+                        <p class="text-[8px] text-slate-400">Verifikasi sisa obat selesai</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative">
+                        <div class="absolute -left-[27px] top-0 w-3.5 h-3.5 rounded-full border-4 border-white shadow-xs ${
+                            refillState === 'ready_for_pickup' ? 'bg-emerald-600' : 'bg-slate-300'
+                        }"></div>
+                        <h4 class="text-[10px] font-bold ${refillState === 'ready_for_pickup' ? 'text-slate-800' : 'text-slate-400'}">Obat Siap Diambil / Dikirim</h4>
+                        <p class="text-[8px] text-slate-400">Gunakan QR Code Profil untuk verifikasi pengambilan</p>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = timelineHtml;
+        }
+
+        // Live Chat message inputs
         function handleChatSubmit(event) {
             event.preventDefault();
             const input = document.getElementById('chat-input');
-            const messageText = input.value.trim();
-            if (!messageText) return;
+            const txt = input.value.trim();
+            if (!txt) return;
 
-            appendMessage('pasien', messageText);
+            appendConsultMessage('patient', txt);
             input.value = '';
 
-            simulateResponse(messageText);
+            simulateNakesReply(txt);
         }
 
-        function sendQuickMessage(text, type) {
-            navigateTo('pesan');
-            appendMessage('pasien', text);
-            simulateResponse(text, type);
+        function sendQuickMessage(txt, type) {
+            navigateTo('chat');
+            appendConsultMessage('patient', txt);
+            simulateNakesReply(txt, type);
         }
 
-        function appendMessage(sender, text) {
+        function appendConsultMessage(sender, text) {
             const container = document.getElementById('chat-messages-container');
-            const alignClass = sender === 'pasien' ? 'items-end' : 'items-start';
-            const bubbleClass = sender === 'pasien' 
+            const alignClass = sender === 'patient' ? 'items-end' : 'items-start';
+            const bubbleClass = sender === 'patient' 
                 ? 'bg-emerald-600 text-white rounded-tr-none shadow-xxs' 
-                : 'bg-white text-slate-700 border border-slate-200 rounded-tl-none shadow-xxs';
+                : 'bg-slate-100 text-slate-800 border border-slate-200/50 rounded-tl-none shadow-xxs';
 
             const msgHtml = `
-                <div class="flex flex-col ${alignClass} animate-fade-in">
+                <div class="flex flex-col ${alignClass} animate-fade-in text-left">
                     <div class="p-2 rounded-xl ${bubbleClass} max-w-[85%]">
                         ${text}
                     </div>
@@ -981,12 +812,14 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        function simulateResponse(patientMsg, type = '') {
+        function simulateNakesReply(patientMsg, type = '') {
             const container = document.getElementById('chat-messages-container');
-            const typingId = 'typing-indicator';
+            const typingId = 'nakes-typing-indicator';
+            
             const typingHtml = `
-                <div id="${typingId}" class="text-[8px] text-slate-400 italic pl-1 animate-pulse">
-                    Membalas...
+                <div id="${typingId}" class="text-[7.5px] text-slate-400 italic pl-1 animate-pulse flex items-center gap-1 mt-1">
+                    <i class="fa-solid fa-circle-notch animate-spin"></i>
+                    <span>Suster Amanda sedang mengetik...</span>
                 </div>
             `;
             container.innerHTML += typingHtml;
@@ -996,89 +829,109 @@
                 const indicator = document.getElementById(typingId);
                 if (indicator) indicator.remove();
 
-                let reply = "Laporan konsultasi Anda telah diteruskan ke rekam medis terintegrasi Puskesmas. Dokter atau PMO Anda akan membalas segera.";
+                let response = "Pesan konsultasimu sudah terekam di sistem digital Puskesmas Melati. Suster akan segera membalas detail keluhanmu ya. Tetap patuhi jadwal minum obat!";
                 
                 if (type === 'urine') {
-                    reply = "💡 Jangan khawatir Pak Budi! Urine berwarna kemerahan/oranye pekat adalah efek samping normal dan aman dari konsumsi Rifampisin. Itu tanda obat diserap tubuh dengan baik.";
+                    response = "💡 Jangan cemas ya Dek Rian! Urine berwarna merah pekat/oranye adalah efek samping yang sangat normal dari konsumsi Rifampisin. Itu pertanda baik obat sedang diproses tubuh.";
                 } else if (type === 'mual') {
-                    reply = "💡 Untuk meredakan mual setelah meminum obat KDT, disarankan mengonsumsi obat 1 jam setelah makan porsi kecil, atau meminumnya di malam hari sebelum tidur.";
-                } else if (patientMsg.toLowerCase().includes('pusing') || patientMsg.toLowerCase().includes('sakit kepala')) {
-                    reply = "💡 Sakit kepala ringan adalah bentuk penyesuaian tubuh terhadap terapi KDT. Sangat dianjurkan untuk memperbanyak istirahat dan menghindari paparan layar gadget setelah minum obat.";
+                    response = "💡 Mengurangi mual setelah minum obat KDT bisa disiasati dengan mengonsumsi biskuit atau pisang kecil terlebih dahulu sebelum meminum obat. Hindari perut kosong ya.";
+                } else if (patientMsg.toLowerCase().includes('mual') || patientMsg.toLowerCase().includes('muntah')) {
+                    response = "💡 Dek Rian, mual di minggu awal adalah wajar. Pastikan makan pisang atau biskuit dulu sebelum minum obat ya. Suster Amanda selalu memantau.";
                 }
 
-                appendMessage('nakes', reply);
-            }, 1000);
+                appendConsultMessage('nakes', response);
+                
+                // If not in chat tab, highlight consultation dot
+                if (currentActiveScreen !== 'chat') {
+                    document.getElementById('chat-notif-dot').classList.remove('hidden');
+                }
+
+            }, 2000);
         }
 
-        // Side-Effects Symptom Checklist Manager
-        function toggleSymptom(element, symptomName) {
-            if (selectedSymptoms.includes(symptomName)) {
-                selectedSymptoms = selectedSymptoms.filter(s => s !== symptomName);
-                element.className = "symptom-btn p-2 rounded-lg border text-[9.5px] font-bold text-left transition-all bg-slate-50 border-slate-100 text-slate-650 hover:border-slate-200";
-            } else {
-                selectedSymptoms.push(symptomName);
-                element.className = "symptom-btn p-2 rounded-lg border text-[9.5px] font-bold text-left transition-all bg-rose-50 border-rose-300 text-rose-700 shadow-xxs";
-            }
+        // SIMULATOR TRIGGER: Set Terlambat (Warning Toast alert)
+        function triggerSimulationLate() {
+            adherenceState = 'not_reported';
+            const notification = document.getElementById('pills-notification');
+            const title = document.getElementById('notif-title');
+            const desc = document.getElementById('notif-desc');
 
-            document.getElementById('btn-submit-symptoms').disabled = (selectedSymptoms.length === 0);
+            notification.classList.remove('hidden');
+            title.innerText = "⚠️ PERINGATAN KETERLAMBATAN";
+            title.className = "font-extrabold text-rose-700 text-[10.5px]";
+            desc.innerText = "Dosis Pagi Anda terlambat dilaporkan! PMO (Bpk. Andi Susanto) mendapatkan notifikasi peringatan kepatuhan.";
+
+            // Highlight current calendar block as red
+            document.getElementById('day-symbol').innerText = "✗";
+            document.getElementById('day-current').className = "p-0.5 rounded bg-rose-50 text-rose-700 border border-rose-100 text-[8px] font-bold flex flex-col items-center";
+            document.getElementById('adherence-rate').innerText = "86.6% Sukses";
         }
 
-        function selectSeverity(level) {
-            currentSeverity = level;
-            document.querySelectorAll('.sev-btn').forEach(btn => {
-                btn.className = "sev-btn flex-1 py-1 rounded text-[8.5px] font-extrabold uppercase transition bg-white border border-slate-200 text-slate-400";
-            });
+        // SIMULATOR TRIGGER: Reset
+        function resetSimulation() {
+            adherenceState = 'not_reported';
+            streakCount = 14;
+            pillRemaining = 12;
+            refillState = 'idle';
+            minutesLeft = 14;
+            secondsLeft = 35;
 
-            const activeBtn = document.getElementById('sev-' + level);
-            if (level === 'ringan') {
-                activeBtn.className = "sev-btn flex-1 py-1 rounded text-[8.5px] font-extrabold uppercase transition bg-emerald-500 text-white shadow-xxs";
-            } else if (level === 'sedang') {
-                activeBtn.className = "sev-btn flex-1 py-1 rounded text-[8.5px] font-extrabold uppercase transition bg-amber-500 text-white shadow-xxs";
-            } else {
-                activeBtn.className = "sev-btn flex-1 py-1 rounded text-[8.5px] font-extrabold uppercase transition bg-rose-500 text-white shadow-xxs";
-            }
-        }
+            // Reset home states
+            document.getElementById('timer-active-card').classList.remove('hidden');
+            document.getElementById('streak-badge-text').innerHTML = `${streakCount} Hari Patuh`;
+            document.getElementById('sisa-stok-top-badge').innerText = `${pillRemaining} Tablet`;
+            document.getElementById('refill-stok-count').innerText = `${pillRemaining} Tablet`;
+            document.getElementById('refill-stok-days').innerText = `${pillRemaining} Hari Saja`;
 
-        function submitSymptomLog() {
-            if (selectedSymptoms.length === 0) return;
+            // Reset refill timelines
+            const actionContainer = document.getElementById('refill-action-container');
+            actionContainer.innerHTML = `
+                <button 
+                    onclick="startRefillRequest()"
+                    class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-[9.5px] flex items-center justify-center gap-1.5 transition active:scale-95 shadow-sm"
+                >
+                    <i class="fa-solid fa-truck-ramp-box"></i> Minta Refill Obat Baru
+                </button>
+            `;
 
-            let clinicalAdvice = "Keluhan diteruskan ke dasbor Puskesmas. Harap pantau ketat kondisi fisik Anda.";
-            if (selectedSymptoms.includes('Urine Kemerahan')) {
-                clinicalAdvice = "Normal akibat konsumsi Rifampisin. Perbanyak minum air hangat.";
-            } else if (selectedSymptoms.includes('Mual Berat') || selectedSymptoms.includes('Muntah')) {
-                clinicalAdvice = "Dianjurkan minum obat setelah makan kecil hangat. Istirahat berbaring.";
-            } else if (selectedSymptoms.includes('Nyeri Sendi')) {
-                clinicalAdvice = "Kondisi umum metabolisme Pirazinamid. Hindari aktivitas sendi berat.";
-            }
+            // Reset notifications
+            const notification = document.getElementById('pills-notification');
+            const title = document.getElementById('notif-title');
+            const desc = document.getElementById('notif-desc');
+            notification.classList.remove('hidden');
+            title.innerText = "Lapor Obat Pagi 💊";
+            title.className = "font-extrabold text-emerald-800 text-[10.5px]";
+            desc.innerText = "Jadwal konsumsi obat pagi Anda sudah tiba. Harap upload foto 4 tablet KDT sebelum Anda minum.";
 
-            const logList = document.getElementById('symptom-logs-list');
-            const newLogHtml = `
-                <div class="bg-slate-50 p-2 rounded-lg border border-slate-100 text-[9px] animate-fade-in">
-                    <div class="flex justify-between items-center mb-0.5">
-                        <span class="font-bold text-slate-400 text-[7.5px]">Hari Ini</span>
-                        <span class="px-1 py-0.2 rounded text-[7px] font-extrabold uppercase ${
-                            currentSeverity === 'ringan' ? 'bg-emerald-50 text-emerald-700' : currentSeverity === 'sedang' ? 'bg-amber-50 text-amber-700' : 'bg-rose-50 text-rose-700'
-                        }">${currentSeverity}</span>
+            // Reset calendar current day block
+            document.getElementById('day-current').className = "p-0.5 rounded bg-slate-100 text-slate-400 border border-slate-200 text-[8px] font-bold flex flex-col items-center";
+            document.getElementById('day-symbol').innerText = "-";
+            document.getElementById('adherence-rate').innerText = "93.3% Sukses";
+
+            // Reset chat history to initial state
+            document.getElementById('chat-messages-container').innerHTML = `
+                <div class="flex flex-col items-start">
+                    <div class="p-2 bg-slate-100 text-slate-800 border border-slate-200/50 rounded-xl rounded-tl-none shadow-xxs max-w-[85%] text-left">
+                        Halo Dek Rian, bagaimana kondisinya hari ini setelah minum obat merah? Apakah ada rasa mual?
                     </div>
-                    <p class="font-extrabold text-slate-750 text-[10px] mb-1">Gejala: ${selectedSymptoms.join(', ')}</p>
-                    <p class="text-slate-550 text-[8.5px] bg-white p-1.5 rounded border border-slate-150 leading-tight">
-                        💡 Catatan Dokter: ${clinicalAdvice}
-                    </p>
+                    <span class="text-[7px] text-slate-400 mt-0.5 px-0.5 font-bold">08:00 WIB</span>
+                </div>
+                <div class="flex flex-col items-end">
+                    <div class="p-2 bg-emerald-600 text-white rounded-xl rounded-tr-none shadow-xxs max-w-[85%] text-left">
+                        Halo Suster Amanda, sedikit mual sus di awal, tapi sekarang sudah baikan setelah istirahat.
+                    </div>
+                    <span class="text-[7px] text-slate-400 mt-0.5 px-0.5 font-bold">08:15 WIB</span>
+                </div>
+                <div class="flex flex-col items-start">
+                    <div class="p-2 bg-slate-100 text-slate-800 border border-slate-200/50 rounded-xl rounded-tl-none shadow-xxs max-w-[85%] text-left">
+                        Bagus, itu reaksi wajar di minggu-minggu awal. Pastikan makan pisang atau biskuit dulu sebelum minum obat ya. Tetap semangat!
+                    </div>
+                    <span class="text-[7px] text-slate-400 mt-0.5 px-0.5 font-bold">08:20 WIB</span>
                 </div>
             `;
-            logList.innerHTML = newLogHtml + logList.innerHTML;
+            document.getElementById('chat-notif-dot').classList.remove('hidden');
 
-            // Send notification as prompt to Chat consultation
-            sendQuickMessage(`Melaporkan keluhan [${selectedSymptoms.join(', ')}] skala ${currentSeverity.toUpperCase()}`, 'clinical');
-
-            // Reset values
-            selectedSymptoms = [];
-            document.querySelectorAll('.symptom-btn').forEach(btn => {
-                btn.className = "symptom-btn p-2 rounded-lg border text-[9.5px] font-bold text-left transition-all bg-slate-50 border-slate-100 text-slate-650 hover:border-slate-200";
-            });
-            document.getElementById('btn-submit-symptoms').disabled = true;
-
-            navigateTo('pesan');
+            navigateTo('beranda');
         }
     </script>
 </body>
