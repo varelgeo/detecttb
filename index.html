@@ -117,12 +117,12 @@
                 </div>
                 <div class="flex-1 text-[11px]">
                     <div class="flex justify-between items-center mb-0.5">
-                        <span id="notif-title" class="font-extrabold text-emerald-800 text-[10.5px]">Lapor Obat Pagi 💊</span>
+                        <span id="notif-title" class="font-extrabold text-emerald-800 text-[10.5px]">Lapor obat hari ini 💊</span>
                         <button onclick="closeNotification()" class="text-slate-400 hover:text-slate-650">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </div>
-                    <p id="notif-desc" class="text-[9.5px] text-slate-500 leading-tight mb-2">Jadwal konsumsi obat pagi Anda sudah tiba. Harap upload foto tablet FDC RHZE saat Anda minum.</p>
+                    <p id="notif-desc" class="text-[9.5px] text-slate-500 leading-tight mb-2">Jadwal konsumsi obat hari ini Anda sudah tiba. Harap upload foto tablet FDC RHZE saat Anda minum.</p>
                     <button onclick="navigateTo('lapor')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[8.5px] font-bold flex items-center gap-1 transition shadow-xs">
                         <i class="fa-solid fa-camera"></i> Ambil Foto Obat
                     </button>
@@ -697,7 +697,7 @@
                 document.getElementById('adherence-rate').innerText = "100% Sukses";
 
                 // Push automatic confirmation alert into consultation chat
-                appendConsultMessage('nakes', "🔔 Suster Amanda (Puskesmas Melati) telah memverifikasi bukti foto obat pagi Anda. Kepatuhan Hari Ke-15 Sukses! Pertahankan kedisiplinan Anda.");
+                appendConsultMessage('nakes', "🔔 Suster Amanda (Puskesmas Melati) telah memverifikasi bukti foto obat hari ini Anda. Kepatuhan Hari Ke-15 Sukses! Pertahankan kedisiplinan Anda.");
                 document.getElementById('chat-notif-dot').classList.remove('hidden');
             }, 4000);
         }
@@ -899,9 +899,9 @@
             const title = document.getElementById('notif-title');
             const desc = document.getElementById('notif-desc');
             notification.classList.remove('hidden');
-            title.innerText = "Lapor Obat Pagi 💊";
+            title.innerText = "Lapor obat hari ini 💊";
             title.className = "font-extrabold text-emerald-800 text-[10.5px]";
-            desc.innerText = "Jadwal konsumsi obat pagi Anda sudah tiba. Harap upload foto 4 tablet FDC RHZE sebelum Anda minum.";
+            desc.innerText = "Jadwal konsumsi obat hari ini Anda sudah tiba. Harap upload foto 4 tablet FDC RHZE sebelum Anda minum.";
 
             // Reset calendar current day block
             document.getElementById('day-current').className = "p-0.5 rounded bg-slate-100 text-slate-400 border border-slate-200 text-[8px] font-bold flex flex-col items-center";
