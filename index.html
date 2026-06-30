@@ -122,7 +122,7 @@
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </div>
-                    <p id="notif-desc" class="text-[9.5px] text-slate-500 leading-tight mb-2">Jadwal konsumsi obat pagi Anda sudah tiba. Harap upload foto 4 tablet KDT sebelum Anda minum.</p>
+                    <p id="notif-desc" class="text-[9.5px] text-slate-500 leading-tight mb-2">Jadwal konsumsi obat pagi Anda sudah tiba. Harap upload foto tablet FDC RHZE saat Anda minum.</p>
                     <button onclick="navigateTo('lapor')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[8.5px] font-bold flex items-center gap-1 transition shadow-xs">
                         <i class="fa-solid fa-camera"></i> Ambil Foto Obat
                     </button>
@@ -343,7 +343,7 @@
                                 <i class="fa-solid fa-camera-retro text-2xl"></i>
                             </div>
                             <div>
-                                <span class="font-extrabold text-slate-800 text-[11px] block">Siapkan 4 Tablet KDT Anda</span>
+                                <span class="font-extrabold text-slate-800 text-[11px] block">Siapkan Tablet FDC RHZE Anda</span>
                                 <p class="text-[9px] text-slate-500 max-w-[200px] mx-auto mt-1 leading-normal">
                                     Letakkan obat di telapak tangan atau permukaan datar agar PMO dapat memverifikasi jumlahnya dengan jelas.
                                 </p>
@@ -386,7 +386,7 @@
                                     </div>
                                 </div>
                                 <span class="text-[8.5px] text-emerald-800 font-extrabold mt-2 uppercase tracking-wide">
-                                    <i class="fa-solid fa-image"></i> bukti_foto_kdt_sore.jpg
+                                    <i class="fa-solid fa-image"></i> bukti_foto_FDC RHZE.jpg
                                 </span>
                             </div>
 
@@ -418,7 +418,7 @@
                             Alur Distribusi Obat (Refill)
                         </h3>
                         <p class="text-[9px] text-slate-450 mt-1 leading-normal">
-                            Jangan sampai putus obat. Ajukan pengisian sediaan OAT baru ke Puskesmas Anda sebelum sisa tablet Anda habis.
+                            Jangan sampai putus obat. Ajukan pengisian sediaan FDC RHZE baru ke Puskesmas Anda sebelum sisa tablet Anda habis.
                         </p>
 
                         <!-- Sisa Stok current display box -->
@@ -492,8 +492,8 @@
                             <button onclick="sendQuickMessage('Kenapa air kencing saya berwarna kemerahan?', 'urine')" class="text-[7.5px] bg-slate-50 hover:bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200/50 font-bold transition">
                                 Urine kemerahan?
                             </button>
-                            <button onclick="sendQuickMessage('Tips mengurangi mual setelah makan obat KDT?', 'mual')" class="text-[7.5px] bg-slate-50 hover:bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200/50 font-bold transition">
-                                Tips mual KDT?
+                            <button onclick="sendQuickMessage('Tips mengurangi mual setelah makan obat FDC RHZE?', 'mual')" class="text-[7.5px] bg-slate-50 hover:bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200/50 font-bold transition">
+                                Tips mual FDC RHZE?
                             </button>
                         </div>
 
@@ -739,7 +739,7 @@
             }, 1200);
         }
 
-        // Render timeline step exactly like React OAT layout
+        // Render timeline step exactly like React FDC RHZE layout
         function updateRefillTimeline() {
             const container = document.getElementById('refill-action-container');
             
@@ -834,7 +834,7 @@
                 if (type === 'urine') {
                     response = "💡 Jangan cemas ya Dek Rian! Urine berwarna merah pekat/oranye adalah efek samping yang sangat normal dari konsumsi Rifampisin. Itu pertanda baik obat sedang diproses tubuh.";
                 } else if (type === 'mual') {
-                    response = "💡 Mengurangi mual setelah minum obat KDT bisa disiasati dengan mengonsumsi biskuit atau pisang kecil terlebih dahulu sebelum meminum obat. Hindari perut kosong ya.";
+                    response = "💡 Mengurangi mual setelah minum obat FDC RHZE bisa disiasati dengan mengonsumsi biskuit atau pisang kecil terlebih dahulu sebelum meminum obat. Hindari perut kosong ya.";
                 } else if (patientMsg.toLowerCase().includes('mual') || patientMsg.toLowerCase().includes('muntah')) {
                     response = "💡 Dek Rian, mual di minggu awal adalah wajar. Pastikan makan pisang atau biskuit dulu sebelum minum obat ya. Suster Amanda selalu memantau.";
                 }
@@ -901,7 +901,7 @@
             notification.classList.remove('hidden');
             title.innerText = "Lapor Obat Pagi 💊";
             title.className = "font-extrabold text-emerald-800 text-[10.5px]";
-            desc.innerText = "Jadwal konsumsi obat pagi Anda sudah tiba. Harap upload foto 4 tablet KDT sebelum Anda minum.";
+            desc.innerText = "Jadwal konsumsi obat pagi Anda sudah tiba. Harap upload foto 4 tablet FDC RHZE sebelum Anda minum.";
 
             // Reset calendar current day block
             document.getElementById('day-current').className = "p-0.5 rounded bg-slate-100 text-slate-400 border border-slate-200 text-[8px] font-bold flex flex-col items-center";
